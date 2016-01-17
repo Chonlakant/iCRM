@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <group android:checkableBehavior="single">
+
+        <item
+            android:id="@+id/qr_code"
+            android:icon="@drawable/qrcode"
+            android:title="สแกน QR Code" />
+
+        <item
+            android:id="@+id/account"
+            android:icon="@drawable/myaccount"
+            android:title="บัญชีผู้ใช้" />
+
+        <item
+            android:id="@+id/order_history"
+            android:icon="@drawable/orderhistory"
+            android:title="ประวัติ" />
+
+
+        <item
+            android:id="@+id/enterprise"
+            android:icon="@drawable/enterprise"
+            android:title="องค์กร/บริษัท" />
+
+
+        <!--<item-->
+        <!--android:id="@+id/login"-->
+        <!--android:title="Login" />-->
+        <!--<item-->
+        <!--android:id="@+id/logout"-->
+        <!--android:title="Logout" />-->
+        <!--<item-->
+        <!--android:id="@+id/about"-->
+        <!--android:title="@string/about" />-->
+
+
+    </group>
+
+
+</menu>

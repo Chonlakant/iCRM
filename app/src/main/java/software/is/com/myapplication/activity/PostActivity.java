@@ -13,6 +13,7 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.v4.app.FragmentTransaction;
+import android.util.Base64;
 import android.util.Log;
 import android.view.Menu;
 import android.view.View;
@@ -24,6 +25,9 @@ import android.widget.Toast;
 
 import com.androidquery.AQuery;
 import com.androidquery.callback.AjaxStatus;
+import com.loopj.android.http.AsyncHttpClient;
+import com.loopj.android.http.JsonHttpResponseHandler;
+import com.loopj.android.http.RequestParams;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.client.ClientProtocolException;
@@ -42,6 +46,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
+import cz.msebera.android.httpclient.Header;
 import software.is.com.myapplication.MainActivity;
 import software.is.com.myapplication.R;
 import software.is.com.myapplication.upload.MultipartEntity;
@@ -57,6 +62,9 @@ public class PostActivity extends Activity implements OnClickListener {
     String content;
 
     Bitmap rotatedBMP;
+    int photoW = 0;
+    int photoH = 0;
+    int scaleFactor = 5;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -83,7 +91,8 @@ public class PostActivity extends Activity implements OnClickListener {
             @Override
             public void onClick(View view) {
                 setPic();
-                uploadConten();
+                //uploadConten();
+                addOrder();
             }
         });
     }
@@ -175,8 +184,7 @@ public class PostActivity extends Activity implements OnClickListener {
                 HttpPost httppost = new HttpPost("http://192.168.1.33:8080/api/comment.php"); // server
 
                 MultipartEntity reqEntity = new MultipartEntity();
-                reqEntity.addPart("myFile",
-                        System.currentTimeMillis() + ".jpg", in);
+                reqEntity.addPart("myFile", System.currentTimeMillis() + ".jpg", in);
                 httppost.setEntity(reqEntity);
 
                 Log.i(TAG, "request " + httppost.getRequestLine());
@@ -307,58 +315,58 @@ public class PostActivity extends Activity implements OnClickListener {
 
         // Save a file: path for use with ACTION_VIEW intents
         mCurrentPhotoPath = image.getAbsolutePath();
+
+
         Log.i(TAG, "photo path = " + mCurrentPhotoPath);
         return image;
     }
 
     private void setPic() {
-        // Get the dimensions of the View
-        int targetW = mImageView.getWidth();
-        int targetH = mImageView.getHeight();
 
-        // Get the dimensions of the bitmap
-        BitmapFactory.Options bmOptions = new BitmapFactory.Options();
-        if (bmOptions != null) {
+        if (mCurrentPhotoPath != null) {
+            // Get the dimensions of the View
+            int targetW = mImageView.getWidth();
+            int targetH = mImageView.getHeight();
+
+            // Get the dimensions of the bitmap
+            BitmapFactory.Options bmOptions = new BitmapFactory.Options();
             bmOptions.inJustDecodeBounds = true;
             BitmapFactory.decodeFile(mCurrentPhotoPath, bmOptions);
-            int photoW = bmOptions.outWidth;
-            int photoH = bmOptions.outHeight;
+            photoW = bmOptions.outWidth;
+            photoH = bmOptions.outHeight;
 
             // Determine how much to scale down the image
-            int scaleFactor = Math.min(photoW / targetW, photoH / targetH);
+            scaleFactor = Math.min(photoW / targetW, photoH / targetH);
 
             // Decode the image file into a Bitmap sized to fill the View
-
             bmOptions.inJustDecodeBounds = false;
             bmOptions.inSampleSize = scaleFactor << 1;
             bmOptions.inPurgeable = true;
 
-        } else {
-            bmOptions = null;
-        }
+            Bitmap bitmap = BitmapFactory.decodeFile(mCurrentPhotoPath, bmOptions);
 
-        Bitmap bitmap = BitmapFactory.decodeFile(mCurrentPhotoPath, bmOptions);
-
-        Matrix mtx = new Matrix();
-        mtx.postRotate(90);
-        // Rotating Bitmap
-        rotatedBMP = Bitmap.createBitmap(bitmap, 0, 0, bitmap.getWidth(), bitmap.getHeight(), mtx, true);
+            Matrix mtx = new Matrix();
+            mtx.postRotate(180);
+            // Rotating Bitmap
+            rotatedBMP = Bitmap.createBitmap(bitmap, 0, 0, bitmap.getWidth(), bitmap.getHeight(), mtx, true);
 
 
-        if (rotatedBMP != bitmap) {
-            bitmap.recycle();
+            if (rotatedBMP != bitmap) {
+                bitmap.recycle();
 
-            mImageView.setImageBitmap(rotatedBMP);
+                mImageView.setImageBitmap(rotatedBMP);
 
-            try {
-                sendPhoto(rotatedBMP);
-            } catch (Exception e) {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
+                try {
+                    sendPhoto(rotatedBMP);
+                } catch (Exception e) {
+                    // TODO Auto-generated catch block
+                    e.printStackTrace();
+                }
+            } else {
+                rotatedBMP = null;
             }
-        } else {
-            rotatedBMP = null;
         }
+
     }
 
     private void uploadConten() {
@@ -375,8 +383,44 @@ public class PostActivity extends Activity implements OnClickListener {
     }
 
     public void addOrderCb(String url, JSONObject jo, AjaxStatus status) throws JSONException {
-        Log.e("Json Return", jo.toString(4));
+        Log.e("status", jo.toString(4));
 
+
+    }
+
+    private void addOrder() {
+        String url = "http://192.168.1.103:8080/api/comment.php";
+        title = et_title.getText().toString();
+        content = et_conten.getText().toString();
+
+        AsyncHttpClient asyncHttpClient = new AsyncHttpClient();
+        RequestParams params = new RequestParams();
+        params.put("title", title);
+        params.put("txt", content);
+
+        asyncHttpClient.post(url, params, new JsonHttpResponseHandler() {
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, JSONObject jo) {
+                super.onSuccess(statusCode, headers, jo);
+                try {
+                    if (!jo.optString("status").equals("error")) {
+                        Log.e("Json Return", jo.toString(4));
+
+                    } else {
+                        Toast.makeText(getApplicationContext(), jo.optString("status"), Toast.LENGTH_SHORT).show();
+                    }
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+            }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
+                super.onFailure(statusCode, headers, responseString, throwable);
+            }
+        });
     }
 
 

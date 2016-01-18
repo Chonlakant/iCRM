@@ -40,4 +40,5 @@ dependencies {
     compile 'org.jbundle.util.osgi.wrapped:org.jbundle.util.osgi.wrapped.org.apache.http.client:4.1.2'
     compile 'com.github.talenguyen:prettysharedpreferences:1.0.2'
     compile 'com.googlecode.android-query:android-query:0.24.3'
+    compile 'com.loopj.android:android-async-http:1.4.9'
 }

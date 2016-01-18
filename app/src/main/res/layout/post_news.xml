@@ -56,10 +56,12 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
+            android:gravity="top|left"
             android:inputType="textPersonName"
             android:hint="รายละเอียด" />
 
         <TextView
+            android:id="@+id/tt"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
@@ -67,11 +69,14 @@
 
         <EditText
             android:id="@+id/et_conten"
+            android:background="@drawable/btn"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="200dp"
             android:layout_marginTop="10dp"
+            android:layout_alignParentLeft="true"
+            android:layout_below="@+id/tt"
             android:inputType="textPersonName"
-            android:hint="รายละเอียด" />
+            android:hint="" />
 
         <LinearLayout
             android:layout_width="wrap_content"

@@ -4,16 +4,15 @@
 
 
         <item
-            android:id="@+id/account"
-            android:icon="@drawable/myaccount"
-            android:title="บัญชีผู้ใช้" />
-
-        <item
             android:id="@+id/qr_code"
             android:icon="@drawable/orderhistory"
             android:title="เขียนบทความ" />
 
 
+        <item
+            android:id="@+id/account"
+            android:icon="@drawable/myaccount"
+            android:title="บัญชีผู้ใช้" />
         <item
             android:id="@+id/enterprise"
             android:icon="@drawable/enterprise"

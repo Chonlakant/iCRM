@@ -10,15 +10,16 @@ public class Post {
 
     /**
      * status : 1
-     * posts : [{"name":"ชลกันต์","txt":"แสดงความคิดเห็น","title":"สอบถามหลักสูตรการจัดอบรม","image":"http://www.munjeed.com/image_news/2012-07-08/Thairath_78201283357PM.jpg"},{"name":"Sattaboot","txt":"แสดงความคิดเห็น","title":"มีกี่หลักสูตครับ","image":""},{"name":"Jony","txt":"แสดงความคิดเห็น","title":"หลักสูตรการสอน ","image":""},{"name":"Jony","txt":"แสดงความคิดเห็น","title":"หลักสูตรการสอน ","image":""},{"name":"Jony wallker","txt":"แสดงความคิดเห็น","title":"หลักสูตรการสอน ","image":""}]
+     * posts : [{"name":"gggg","txt":"แสดงความคิดเห็น","title":"หลักสูตรการสอน ","image":"","count":"12"}]
      */
 
     private int status;
     /**
-     * name : ชลกันต์
+     * name : gggg
      * txt : แสดงความคิดเห็น
-     * title : สอบถามหลักสูตรการจัดอบรม
-     * image : http://www.munjeed.com/image_news/2012-07-08/Thairath_78201283357PM.jpg
+     * title : หลักสูตรการสอน
+     * image :
+     * count : 12
      */
 
     private List<PostsEntity> posts;
@@ -44,6 +45,7 @@ public class Post {
         private String txt;
         private String title;
         private String image;
+        private String count;
 
         public void setName(String name) {
             this.name = name;
@@ -61,6 +63,10 @@ public class Post {
             this.image = image;
         }
 
+        public void setCount(String count) {
+            this.count = count;
+        }
+
         public String getName() {
             return name;
         }
@@ -75,6 +81,10 @@ public class Post {
 
         public String getImage() {
             return image;
+        }
+
+        public String getCount() {
+            return count;
         }
     }
 }

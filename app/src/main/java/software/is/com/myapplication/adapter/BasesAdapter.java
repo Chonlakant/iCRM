@@ -21,8 +21,6 @@ import software.is.com.myapplication.model.Post;
 public class BasesAdapter extends android.widget.BaseAdapter implements AdapterView.OnClickListener {
 
     private Context context;
-    private OnItemClickListener mItemClickListener;
-
     public ArrayList<Post> list = new ArrayList<Post>();
 
     public BasesAdapter(Context context, ArrayList<Post> list) {
@@ -45,17 +43,7 @@ public class BasesAdapter extends android.widget.BaseAdapter implements AdapterV
         return position;
     }
 
-    public class ViewHolder {
 
-
-        TextView title;
-
-
-        public ViewHolder(View row) {
-            title = (TextView) row.findViewById(R.id.title);
-
-        }
-    }
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
@@ -75,8 +63,8 @@ public class BasesAdapter extends android.widget.BaseAdapter implements AdapterV
             Post item = list.get(position);
 
 
-            mViewHolder.title.setText(item.getPosts().get(position).getName());
-
+            mViewHolder.title.setText(item.getPosts().get(position).getTitle());
+            mViewHolder.count.setText("อ่าน "+item.getPosts().get(position).getCount() + "คน");
 
 //            Picasso.with(context)
 //                    .load(item.getpAvatar())
@@ -95,24 +83,21 @@ public class BasesAdapter extends android.widget.BaseAdapter implements AdapterV
 
     @Override
     public void onClick(View view) {
-//
-//        switch (view.getId()) {
-//            case R.id.video_thumb:
-//                if (mItemClickListener != null) {
-//                    mItemClickListener.onItemClick(view);
-//                }
-//                break;
-//
-//        }
+
     }
 
-    public interface OnItemClickListener {
-        public void onItemClick(View view);
+    public class ViewHolder {
+
+
+        TextView title;
+        TextView count;
+
+        public ViewHolder(View row) {
+            title = (TextView) row.findViewById(R.id.title);
+            count = (TextView) row.findViewById(R.id.count);
+        }
     }
 
-    public void SetOnItemClickListener(final OnItemClickListener mItemClickListener) {
-        this.mItemClickListener = mItemClickListener;
-    }
 
 
 }

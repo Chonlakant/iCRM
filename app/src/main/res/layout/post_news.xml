@@ -34,6 +34,7 @@
 
     <ImageView
         android:layout_marginTop="5dp"
+        android:visibility="gone"
         android:id="@+id/imageview"
         android:layout_width="fill_parent"
         android:layout_height="200dp" />
@@ -51,12 +52,12 @@
             android:text="หัวข้อข่าว" />
 
         <EditText
-            android:id="@+id/editText"
+            android:id="@+id/et_title"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
             android:inputType="textPersonName"
-            android:text="รายละเอียด" />
+            android:hint="รายละเอียด" />
 
         <TextView
             android:layout_width="wrap_content"
@@ -65,12 +66,12 @@
             android:text="รายละเอียดข่าว" />
 
         <EditText
-            android:id="@+id/editText2"
+            android:id="@+id/et_conten"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
             android:inputType="textPersonName"
-            android:text="รายละเอียด" />
+            android:hint="รายละเอียด" />
 
         <LinearLayout
             android:layout_width="wrap_content"

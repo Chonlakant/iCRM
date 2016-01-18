@@ -24,15 +24,14 @@ import software.is.com.myapplication.service.ApiService;
 public class IcrmApp extends Application implements Application.ActivityLifecycleCallbacks {
 
 
-    public static final String API_ENDPOINT = "http://192.168.1.33" +
-            ":8080";
+    public static final String API_ENDPOINT = "http://192.168.1.103:8080";
 
     public static Activity currentActivity;
 
     private static IcrmApp Instance;
     public static volatile Handler applicationHandler = null;
     private ApiHandler someApiHandler;
-
+    private static PrefManager prefManager;
 
     public static final String APP_PERMISSIONS = "email,public_profile,user_friends";
     private static OkHttpClient sHttpClient;
@@ -54,7 +53,7 @@ public class IcrmApp extends Application implements Application.ActivityLifecycl
         sContext = this;
         Instance = this;
         applicationHandler = new Handler(getInstance().getMainLooper());
-
+        prefManager = new PrefManager(getSharedPreferences("App", MODE_PRIVATE));
 
         saveInstallation(0);
 
@@ -125,7 +124,9 @@ public class IcrmApp extends Application implements Application.ActivityLifecycl
     }
 
     public static boolean applicationOnPause = false;
-
+    public static PrefManager getPrefManager() {
+        return prefManager;
+    }
     @Override
     public void onActivityCreated(Activity arg0, Bundle arg1) {
         currentActivity = arg0;

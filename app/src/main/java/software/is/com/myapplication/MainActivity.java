@@ -1,5 +1,6 @@
 package software.is.com.myapplication;
 
+import android.app.Dialog;
 import android.content.Intent;
 import android.graphics.Color;
 import android.net.Uri;
@@ -14,7 +15,11 @@ import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.FrameLayout;
 import android.widget.ListView;
+import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
 
 import com.squareup.otto.Subscribe;
 
@@ -36,16 +41,26 @@ public class MainActivity extends AppCompatActivity {
     private NavigationView navigationView;
     private DrawerLayout drawerLayout;
     private Toolbar toolbar;
+    PrefManager prefManager;
+    RelativeLayout content_frame;
+    Dialog dialog2;
+    ProgressBar progressBar2;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        dialog2 = new Dialog(getApplicationContext());
         listView = (ListView) findViewById(R.id.listView);
+        prefManager = IcrmApp.getPrefManager();
         swipeContainer = (SwipeRefreshLayout) findViewById(R.id.swipeContainer);
         ApiBus.getInstance().postQueue(new ImagesRequestedEvent());
         toolbar = (Toolbar) findViewById(R.id.toolbar);
+        dialog2 = new Dialog(getApplicationContext(), R.style.FullHeightDialog);
+        dialog2.setContentView(R.layout.dialog_loading);
+        progressBar2 = (ProgressBar) findViewById(R.id.progressBar2);
         drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
+        content_frame = (RelativeLayout) findViewById(R.id.content_frame);
         navigationView = (NavigationView) findViewById(R.id.navigation_view);
         setupViews();
 
@@ -80,8 +95,11 @@ public class MainActivity extends AppCompatActivity {
                     public void run() {
                         ApiBus.getInstance().postQueue(new ImagesRequestedEvent());
                         listPost.clear();
-                        basesAdapter.notifyDataSetChanged();
+                        if (basesAdapter != null) {
+                            basesAdapter.notifyDataSetChanged();
+                        }
                         if (listPost != null) {
+
                             setupAdapter();
                         }
 
@@ -110,15 +128,9 @@ public class MainActivity extends AppCompatActivity {
                         break;
 
                     case R.id.account:
-
+                        dialog2.show();
                         drawerLayout.closeDrawers();
                         break;
-
-                    case R.id.order_history:
-
-                        drawerLayout.closeDrawers();
-                        break;
-
 
                     case R.id.enterprise:
 
@@ -156,7 +168,7 @@ public class MainActivity extends AppCompatActivity {
             Log.e("event", event.getPost().getPosts().get(0).getName());
             listPost.add(event.getPost());
             setupAdapter();
-
+            progressBar2.setVisibility(View.GONE);
         }
     }
 

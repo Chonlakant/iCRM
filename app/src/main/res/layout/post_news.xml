@@ -74,6 +74,7 @@
             android:layout_height="200dp"
             android:layout_marginTop="10dp"
             android:layout_alignParentLeft="true"
+            android:gravity="top"
             android:layout_below="@+id/tt"
             android:inputType="textPersonName"
             android:hint="" />

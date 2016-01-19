@@ -1,21 +1,18 @@
 package software.is.com.myapplication.activity;
-
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.content.res.Configuration;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.Matrix;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
-import android.support.v4.app.FragmentTransaction;
-import android.util.Base64;
 import android.util.Log;
-import android.view.Menu;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
@@ -23,33 +20,33 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
 
-import com.androidquery.AQuery;
-import com.androidquery.callback.AjaxStatus;
-import com.loopj.android.http.AsyncHttpClient;
-import com.loopj.android.http.JsonHttpResponseHandler;
-import com.loopj.android.http.RequestParams;
 
-import org.apache.http.HttpResponse;
-import org.apache.http.client.ClientProtocolException;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
-import java.io.InputStream;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
+import org.apache.http.HttpResponse;
+import org.apache.http.NameValuePair;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.entity.UrlEncodedFormEntity;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.message.BasicNameValuePair;
+import org.apache.http.util.EntityUtils;
 
-import cz.msebera.android.httpclient.Header;
-import software.is.com.myapplication.MainActivity;
+import software.is.com.myapplication.Base64;
 import software.is.com.myapplication.R;
-import software.is.com.myapplication.upload.MultipartEntity;
 
 public class PostActivity extends Activity implements OnClickListener {
     private Button mTakePhoto, choose_photo;
@@ -61,10 +58,13 @@ public class PostActivity extends Activity implements OnClickListener {
     String title;
     String content;
 
-    Bitmap rotatedBMP;
-    int photoW = 0;
-    int photoH = 0;
-    int scaleFactor = 5;
+    Button btpic, btnup;
+    private Uri fileUri;
+    String picturePath;
+    Uri selectedImage;
+    Bitmap photo;
+    String ba1;
+    public static String URL = "http://192.168.1.34:8080/demo/index.php";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -90,9 +90,21 @@ public class PostActivity extends Activity implements OnClickListener {
         btn_upload.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
-                setPic();
                 //uploadConten();
-                addOrder();
+                //addOrder();
+                Log.e("path", "----------------" + picturePath);
+
+                // Image
+                Bitmap bm = BitmapFactory.decodeFile(picturePath);
+                ByteArrayOutputStream bao = new ByteArrayOutputStream();
+                bm.compress(Bitmap.CompressFormat.JPEG, 90, bao);
+                byte[] ba = bao.toByteArray();
+                ba1 = Base64.encodeBytes(ba);
+
+                Log.e("base64", "-----" + ba1);
+
+                // Upload image to server
+                new uploadToServer().execute();
             }
         });
     }
@@ -116,28 +128,44 @@ public class PostActivity extends Activity implements OnClickListener {
     }
 
     private void takePhoto() {
-//		Intent intent = new Intent("android.media.action.IMAGE_CAPTURE");
-//		intent.putExtra(MediaStore.EXTRA_VIDEO_QUALITY, 1);
-//		startActivityForResult(intent, 0);
-        dispatchTakePictureIntent();
+        if (getApplicationContext().getPackageManager().hasSystemFeature(
+                PackageManager.FEATURE_CAMERA)) {
+            // Open default camera
+            Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+            intent.putExtra(MediaStore.EXTRA_OUTPUT, fileUri);
+
+            // start the image capture Intent
+            startActivityForResult(intent, 100);
+
+        } else {
+            Toast.makeText(getApplication(), "Camera not supported", Toast.LENGTH_LONG).show();
+        }
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         // TODO Auto-generated method stub
         Log.i(TAG, "onActivityResult: " + this);
-        if (requestCode == REQUEST_TAKE_PHOTO && resultCode == Activity.RESULT_OK) {
+        if (requestCode == 100 && resultCode == RESULT_OK) {
             mImageView.setVisibility(View.VISIBLE);
-//			Bitmap bitmap = (Bitmap) data.getExtras().get("data");
-//			if (bitmap != null) {
-//				mImageView.setImageBitmap(bitmap);
-//				try {
-//					sendPhoto(bitmap);
-//				} catch (Exception e) {
-//					// TODO Auto-generated catch block
-//					e.printStackTrace();
-//				}
-//			}
+
+            selectedImage = data.getData();
+            photo = (Bitmap) data.getExtras().get("data");
+
+            // Cursor to get image uri to display
+
+            String[] filePathColumn = {MediaStore.Images.Media.DATA};
+            Cursor cursor = getContentResolver().query(selectedImage,
+                    filePathColumn, null, null, null);
+            cursor.moveToFirst();
+
+            int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
+            picturePath = cursor.getString(columnIndex);
+            cursor.close();
+
+            Bitmap photo = (Bitmap) data.getExtras().get("data");
+            mImageView.setImageBitmap(photo);
+
         }
         if (requestCode == RESULT_LOAD_IMG && resultCode == RESULT_OK
                 && null != data) {
@@ -153,99 +181,14 @@ public class PostActivity extends Activity implements OnClickListener {
             cursor.moveToFirst();
 
             int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
-            mCurrentPhotoPath = cursor.getString(columnIndex);
+            picturePath = cursor.getString(columnIndex);
             cursor.close();
             mImageView.setVisibility(View.VISIBLE);
-            mImageView.setImageBitmap(BitmapFactory
-                    .decodeFile(mCurrentPhotoPath));
+            mImageView.setImageBitmap(BitmapFactory.decodeFile(picturePath));
 
         }
     }
 
-    private void sendPhoto(Bitmap bitmap) throws Exception {
-        new UploadTask().execute(bitmap);
-
-    }
-
-    private class UploadTask extends AsyncTask<Bitmap, Void, Void> {
-
-        protected Void doInBackground(Bitmap... bitmaps) {
-            if (bitmaps[0] == null)
-                return null;
-            setProgress(0);
-
-            Bitmap bitmap = bitmaps[0];
-            ByteArrayOutputStream stream = new ByteArrayOutputStream();
-            bitmap.compress(Bitmap.CompressFormat.PNG, 100, stream); // convert Bitmap to ByteArrayOutputStream
-            InputStream in = new ByteArrayInputStream(stream.toByteArray()); // convert ByteArrayOutputStream to ByteArrayInputStream
-
-            DefaultHttpClient httpclient = new DefaultHttpClient();
-            try {
-                HttpPost httppost = new HttpPost("http://192.168.1.33:8080/api/comment.php"); // server
-
-                MultipartEntity reqEntity = new MultipartEntity();
-                reqEntity.addPart("myFile", System.currentTimeMillis() + ".jpg", in);
-                httppost.setEntity(reqEntity);
-
-                Log.i(TAG, "request " + httppost.getRequestLine());
-                HttpResponse response = null;
-                try {
-                    response = httpclient.execute(httppost);
-                } catch (ClientProtocolException e) {
-                    // TODO Auto-generated catch block
-                    e.printStackTrace();
-                } catch (IOException e) {
-                    // TODO Auto-generated catch block
-                    e.printStackTrace();
-                }
-                try {
-                    if (response != null)
-                        Log.i(TAG, "response " + response.getStatusLine().toString());
-                } finally {
-
-                }
-            } finally {
-
-            }
-
-            if (in != null) {
-                try {
-                    in.close();
-                } catch (IOException e) {
-                    // TODO Auto-generated catch block
-                    e.printStackTrace();
-                }
-            }
-
-            if (stream != null) {
-                try {
-                    stream.close();
-                } catch (IOException e) {
-                    // TODO Auto-generated catch block
-                    e.printStackTrace();
-                }
-            }
-
-            return null;
-        }
-
-        @Override
-        protected void onProgressUpdate(Void... values) {
-            // TODO Auto-generated method stub
-            super.onProgressUpdate(values);
-        }
-
-        @Override
-        protected void onPostExecute(Void result) {
-            // TODO Auto-generated method stub
-            super.onPostExecute(result);
-
-            Toast.makeText(getApplication(), "อัพโหลดสำเร็จ", Toast.LENGTH_LONG).show();
-            Intent i = new Intent(getApplicationContext(), MainActivity.class);
-            startActivity(i);
-            finish();
-        }
-    }
 
     @Override
     protected void onResume() {
@@ -276,152 +219,64 @@ public class PostActivity extends Activity implements OnClickListener {
     String mCurrentPhotoPath;
 
     static final int REQUEST_TAKE_PHOTO = 1;
-    File photoFile = null;
 
-    private void dispatchTakePictureIntent() {
-        Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-        // Ensure that there's a camera activity to handle the intent
-        if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
-            // Create the File where the photo should go
-            File photoFile = null;
+    public class uploadToServer extends AsyncTask<Void, Void, String> {
+
+        private ProgressDialog pd = new ProgressDialog(PostActivity.this);
+        protected void onPreExecute() {
+            super.onPreExecute();
+            pd.setMessage("Wait image uploading!");
+            pd.show();
+        }
+
+        @Override
+        protected String doInBackground(Void... params) {
+
+            ArrayList<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>();
+            nameValuePairs.add(new BasicNameValuePair("base64", ba1));
+            nameValuePairs.add(new BasicNameValuePair("ImageName", System.currentTimeMillis() + ".jpg"));
             try {
-                photoFile = createImageFile();
-            } catch (IOException ex) {
-                // Error occurred while creating the File
+                HttpClient httpclient = new DefaultHttpClient();
+                HttpPost httppost = new HttpPost(URL);
+                httppost.setEntity(new UrlEncodedFormEntity(nameValuePairs));
+                HttpResponse response = httpclient.execute(httppost);
+                String st = EntityUtils.toString(response.getEntity());
+                Log.v("log_tag", "In the try Loop" + st);
 
+            } catch (Exception e) {
+                Log.v("log_tag", "Error in http connection " + e.toString());
             }
-            // Continue only if the File was successfully created
-            if (photoFile != null) {
-                takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT,
-                        Uri.fromFile(photoFile));
-                startActivityForResult(takePictureIntent, REQUEST_TAKE_PHOTO);
-            }
+            return "Success";
+
+        }
+
+        protected void onPostExecute(String result) {
+            super.onPostExecute(result);
+            pd.hide();
+            pd.dismiss();
         }
     }
 
-    /**
-     * http://developer.android.com/training/camera/photobasics.html
-     */
-    private File createImageFile() throws IOException {
-        // Create an image file name
-        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
-        String imageFileName = "JPEG_" + timeStamp + "_";
-        String storageDir = Environment.getExternalStorageDirectory() + "/picupload";
-        File dir = new File(storageDir);
-        if (!dir.exists())
-            dir.mkdir();
-
-        File image = new File(storageDir + "/" + imageFileName + ".jpg");
-
-        // Save a file: path for use with ACTION_VIEW intents
-        mCurrentPhotoPath = image.getAbsolutePath();
-
-
-        Log.i(TAG, "photo path = " + mCurrentPhotoPath);
-        return image;
-    }
-
-    private void setPic() {
-
-        if (mCurrentPhotoPath != null) {
-            // Get the dimensions of the View
-            int targetW = mImageView.getWidth();
-            int targetH = mImageView.getHeight();
-
-            // Get the dimensions of the bitmap
-            BitmapFactory.Options bmOptions = new BitmapFactory.Options();
-            bmOptions.inJustDecodeBounds = true;
-            BitmapFactory.decodeFile(mCurrentPhotoPath, bmOptions);
-            photoW = bmOptions.outWidth;
-            photoH = bmOptions.outHeight;
-
-            // Determine how much to scale down the image
-            scaleFactor = Math.min(photoW / targetW, photoH / targetH);
-
-            // Decode the image file into a Bitmap sized to fill the View
-            bmOptions.inJustDecodeBounds = false;
-            bmOptions.inSampleSize = scaleFactor << 1;
-            bmOptions.inPurgeable = true;
-
-            Bitmap bitmap = BitmapFactory.decodeFile(mCurrentPhotoPath, bmOptions);
-
-            Matrix mtx = new Matrix();
-            mtx.postRotate(180);
-            // Rotating Bitmap
-            rotatedBMP = Bitmap.createBitmap(bitmap, 0, 0, bitmap.getWidth(), bitmap.getHeight(), mtx, true);
+//    private void uploadConten() {
+//        title = et_title.getText().toString();
+//        content = et_conten.getText().toString();
+//        String url = "http://192.168.1.103:8080/api/comment.php";
+//
+//        Map<String, Object> params = new HashMap<String, Object>();
+//        params.put("title", title);
+//        params.put("txt", content);
+//
+//        AQuery aq = new AQuery(getApplicationContext());
+//        aq.ajax(url, params, JSONObject.class, this, "addOrderCb");
+//    }
+//
+//    public void addOrderCb(String url, JSONObject jo, AjaxStatus status) throws JSONException {
+//        Log.e("status", jo.toString(4));
+//
+//
+//    }
 
 
-            if (rotatedBMP != bitmap) {
-                bitmap.recycle();
-
-                mImageView.setImageBitmap(rotatedBMP);
-
-                try {
-                    sendPhoto(rotatedBMP);
-                } catch (Exception e) {
-                    // TODO Auto-generated catch block
-                    e.printStackTrace();
-                }
-            } else {
-                rotatedBMP = null;
-            }
-        }
-
-    }
-
-    private void uploadConten() {
-        title = et_title.getText().toString();
-        content = et_conten.getText().toString();
-        String url = "http://192.168.1.103:8080/api/comment.php";
-
-        Map<String, Object> params = new HashMap<String, Object>();
-        params.put("title", title);
-        params.put("txt", content);
-
-        AQuery aq = new AQuery(getApplicationContext());
-        aq.ajax(url, params, JSONObject.class, this, "addOrderCb");
-    }
-
-    public void addOrderCb(String url, JSONObject jo, AjaxStatus status) throws JSONException {
-        Log.e("status", jo.toString(4));
-
-
-    }
-
-    private void addOrder() {
-        String url = "http://192.168.1.103:8080/api/comment.php";
-        title = et_title.getText().toString();
-        content = et_conten.getText().toString();
-
-        AsyncHttpClient asyncHttpClient = new AsyncHttpClient();
-        RequestParams params = new RequestParams();
-        params.put("title", title);
-        params.put("txt", content);
-
-        asyncHttpClient.post(url, params, new JsonHttpResponseHandler() {
-            @Override
-            public void onSuccess(int statusCode, Header[] headers, JSONObject jo) {
-                super.onSuccess(statusCode, headers, jo);
-                try {
-                    if (!jo.optString("status").equals("error")) {
-                        Log.e("Json Return", jo.toString(4));
-
-                    } else {
-                        Toast.makeText(getApplicationContext(), jo.optString("status"), Toast.LENGTH_SHORT).show();
-                    }
-
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-
-            }
-
-            @Override
-            public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
-                super.onFailure(statusCode, headers, responseString, throwable);
-            }
-        });
-    }
 
 
 }

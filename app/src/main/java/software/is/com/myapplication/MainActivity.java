@@ -4,8 +4,8 @@ import android.app.Dialog;
 import android.content.Intent;
 import android.graphics.Color;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Handler;
-import android.support.customtabs.CustomTabsIntent;
 import android.support.design.widget.NavigationView;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -66,6 +66,14 @@ public class MainActivity extends AppCompatActivity {
 
         if (toolbar != null) {
             setSupportActionBar(toolbar);
+
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
+                getSupportActionBar().setHomeAsUpIndicator(getResources().getDrawable(R.drawable.abc_ic_ab_back_mtrl_am_alpha, null));
+            else
+                getSupportActionBar().setHomeAsUpIndicator(getResources().getDrawable(R.drawable.abc_ic_ab_back_mtrl_am_alpha));
+
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
             getSupportActionBar().setTitle("iCRM");
             toolbar.setTitleTextColor(Color.WHITE);
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -108,7 +116,7 @@ public class MainActivity extends AppCompatActivity {
                 }, 2500);
             }
         });
-
+    content_frame.setBackgroundColor(prefManager.color().getOr(00000));
 
     }
 

@@ -99,7 +99,7 @@
     <color name="btn_context_menu_text_red">#ffff0000</color>
 
 
-
+    <color name="float_transparent">#00000000</color>
 
     <color name="fab_menu">#3296f6</color>
     <color name="fab_chat">#fc9700</color>

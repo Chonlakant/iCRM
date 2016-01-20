@@ -2,6 +2,7 @@ package software.is.com.myapplication.activity;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.res.Configuration;
@@ -13,6 +14,7 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
+import android.support.v7.app.NotificationCompat;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -269,28 +271,32 @@ public class PostActivity extends Activity implements OnClickListener {
         }
     }
 
-    private void uploadConten() {
-        title = et_title.getText().toString();
-        content = et_conten.getText().toString();
-        String url = "http://192.168.1.141/i_community/add_news.php";
-
-        Map<String, Object> params = new HashMap<String, Object>();
-        params.put("title", title);
-        params.put("details", content);
-        params.put("create_date", title);
-        params.put("create_by", content);
-        params.put("myfile", content);
 
 
-        AQuery aq = new AQuery(getApplicationContext());
-        aq.ajax(url, params, JSONObject.class, this, "addOrderCb");
-    }
+//    private void uploadConten() {
+//        title = et_title.getText().toString();
+//        content = et_conten.getText().toString();
+//        String url = "http://192.168.1.141/i_community/add_news.php";
+//
+//        Map<String, Object> params = new HashMap<String, Object>();
+//        params.put("title", title);
+//        params.put("details", content);
+//        params.put("create_date", title);
+//        params.put("create_by", content);
+//        params.put("myfile", content);
+//
+//
+//        AQuery aq = new AQuery(getApplicationContext());
+//        aq.ajax(url, params, JSONObject.class, this, "addOrderCb");
+//    }
+//
+//    public void addOrderCb(String url, JSONObject jo, AjaxStatus status) throws JSONException {
+//        Log.e("status", jo.toString(4));
+//
+//
+//    }
 
-    public void addOrderCb(String url, JSONObject jo, AjaxStatus status) throws JSONException {
-        Log.e("status", jo.toString(4));
 
-
-    }
 
 
 }

@@ -42,5 +42,5 @@ dependencies {
     compile 'com.googlecode.android-query:android-query:0.24.3'
     compile 'com.loopj.android:android-async-http:1.4.9'
 
-   // compile files('libs/gcm.jar')
+    compile files('libs/gcm.jar')
 }

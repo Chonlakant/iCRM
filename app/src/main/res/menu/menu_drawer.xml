@@ -18,6 +18,12 @@
             android:icon="@drawable/enterprise"
             android:title="องค์กร/บริษัท" />
 
+        <item
+            android:id="@+id/logout"
+            android:icon="@drawable/enterprise"
+            android:title="ออกจากระบบ" />
+
+
 
         <!--<item-->
         <!--android:id="@+id/login"-->

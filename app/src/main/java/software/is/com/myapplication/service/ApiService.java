@@ -8,7 +8,7 @@ import software.is.com.myapplication.model.Post;
 
 public interface ApiService {
 
-    @GET("/api/get_comment.php?uid=1&cat=1")
+    @GET("/i_community/service/news_list.php")
     void getImage(Callback<Post> callback);
 
 }

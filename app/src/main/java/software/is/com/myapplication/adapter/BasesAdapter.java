@@ -63,8 +63,8 @@ public class BasesAdapter extends android.widget.BaseAdapter implements AdapterV
             Post item = list.get(position);
 
 
-            mViewHolder.title.setText(item.getPosts().get(position).getTitle());
-            mViewHolder.count.setText("อ่าน "+item.getPosts().get(position).getCount() + "คน");
+            mViewHolder.title.setText(item.getPost().get(position).getTitle());
+            mViewHolder.count.setText("อ่าน "+item.getPost().get(position).getCount() + "คน");
 
 //            Picasso.with(context)
 //                    .load(item.getpAvatar())

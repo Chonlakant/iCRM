@@ -24,7 +24,7 @@ import software.is.com.myapplication.service.ApiService;
 public class IcrmApp extends Application implements Application.ActivityLifecycleCallbacks {
 
 
-    public static final String API_ENDPOINT = "http://192.168.1.34:8080";
+    public static final String API_ENDPOINT = "http://192.168.1.141";
 
     public static Activity currentActivity;
 

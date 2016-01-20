@@ -43,21 +43,17 @@ public class MainActivity extends AppCompatActivity {
     private Toolbar toolbar;
     PrefManager prefManager;
     RelativeLayout content_frame;
-    Dialog dialog2;
     ProgressBar progressBar2;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        dialog2 = new Dialog(getApplicationContext());
         listView = (ListView) findViewById(R.id.listView);
         prefManager = IcrmApp.getPrefManager();
         swipeContainer = (SwipeRefreshLayout) findViewById(R.id.swipeContainer);
         ApiBus.getInstance().postQueue(new ImagesRequestedEvent());
         toolbar = (Toolbar) findViewById(R.id.toolbar);
-        dialog2 = new Dialog(getApplicationContext(), R.style.FullHeightDialog);
-        dialog2.setContentView(R.layout.dialog_loading);
         progressBar2 = (ProgressBar) findViewById(R.id.progressBar2);
         drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         content_frame = (RelativeLayout) findViewById(R.id.content_frame);
@@ -74,7 +70,7 @@ public class MainActivity extends AppCompatActivity {
 
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-            getSupportActionBar().setTitle("iCRM");
+            getSupportActionBar().setTitle("iCommunity");
             toolbar.setTitleTextColor(Color.WHITE);
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
             getSupportActionBar().setDisplayShowHomeEnabled(true);
@@ -116,7 +112,7 @@ public class MainActivity extends AppCompatActivity {
                 }, 2500);
             }
         });
-    content_frame.setBackgroundColor(prefManager.color().getOr(00000));
+        content_frame.setBackgroundColor(prefManager.color().getOr(00000));
 
     }
 
@@ -132,15 +128,19 @@ public class MainActivity extends AppCompatActivity {
                     case R.id.qr_code:
                         Intent i = new Intent(getApplicationContext(), PostActivity.class);
                         startActivity(i);
-                        finish();
                         break;
 
                     case R.id.account:
-                        dialog2.show();
+
                         drawerLayout.closeDrawers();
                         break;
 
                     case R.id.enterprise:
+
+                        drawerLayout.closeDrawers();
+                        break;
+
+                    case R.id.logout:
 
                         drawerLayout.closeDrawers();
                         break;
@@ -173,7 +173,7 @@ public class MainActivity extends AppCompatActivity {
     @Subscribe
     public void GetList(final ImagesReceivedEvent event) {
         if (event != null) {
-            Log.e("event", event.getPost().getPosts().get(0).getName());
+            Log.e("event", event.getPost().getPost().get(0).getDetails());
             listPost.add(event.getPost());
             setupAdapter();
             progressBar2.setVisibility(View.GONE);

@@ -1,4 +1,5 @@
 package software.is.com.myapplication.activity;
+
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
@@ -21,6 +22,9 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 
+import com.androidquery.AQuery;
+import com.androidquery.callback.AjaxStatus;
+
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.HttpPost;
@@ -29,23 +33,18 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.IOException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
+
 import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
-import org.apache.http.client.HttpClient;
-import org.apache.http.client.entity.UrlEncodedFormEntity;
-import org.apache.http.client.methods.HttpPost;
-import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.util.EntityUtils;
 
 import software.is.com.myapplication.Base64;
+import software.is.com.myapplication.MainActivity;
 import software.is.com.myapplication.R;
 
 public class PostActivity extends Activity implements OnClickListener {
@@ -57,14 +56,12 @@ public class PostActivity extends Activity implements OnClickListener {
     EditText et_title, et_conten;
     String title;
     String content;
-
-    Button btpic, btnup;
     private Uri fileUri;
     String picturePath;
     Uri selectedImage;
     Bitmap photo;
-    String ba1;
-    public static String URL = "http://192.168.1.34:8080/demo/index.php";
+    String ba1 = "";
+    public static String URL = "http://192.168.1.141/i_community/add_news.php";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -90,21 +87,35 @@ public class PostActivity extends Activity implements OnClickListener {
         btn_upload.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
-                //uploadConten();
-                //addOrder();
+                title = et_title.getText().toString();
+                content = et_conten.getText().toString();
+//                if (picturePath != null) {
+
                 Log.e("path", "----------------" + picturePath);
 
                 // Image
-                Bitmap bm = BitmapFactory.decodeFile(picturePath);
-                ByteArrayOutputStream bao = new ByteArrayOutputStream();
-                bm.compress(Bitmap.CompressFormat.JPEG, 90, bao);
-                byte[] ba = bao.toByteArray();
-                ba1 = Base64.encodeBytes(ba);
+                if(picturePath != null){
+                    Bitmap bm = BitmapFactory.decodeFile(picturePath);
+                    ByteArrayOutputStream bao = new ByteArrayOutputStream();
+                    bm.compress(Bitmap.CompressFormat.JPEG, 90, bao);
+                    byte[] ba = bao.toByteArray();
+                    ba1 = Base64.encodeBytes(ba);
 
-                Log.e("base64", "-----" + ba1);
+                    Log.e("base64", "-----" + ba1);
+                }else{
+                    ba1 = "";
+                }
+
 
                 // Upload image to server
                 new uploadToServer().execute();
+//                } else {
+//                    picturePath = "";
+//                }
+
+                //uploadConten();
+
+
             }
         });
     }
@@ -130,11 +141,8 @@ public class PostActivity extends Activity implements OnClickListener {
     private void takePhoto() {
         if (getApplicationContext().getPackageManager().hasSystemFeature(
                 PackageManager.FEATURE_CAMERA)) {
-            // Open default camera
             Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
             intent.putExtra(MediaStore.EXTRA_OUTPUT, fileUri);
-
-            // start the image capture Intent
             startActivityForResult(intent, 100);
 
         } else {
@@ -216,13 +224,10 @@ public class PostActivity extends Activity implements OnClickListener {
         Log.i(TAG, "onSaveInstanceState");
     }
 
-    String mCurrentPhotoPath;
-
-    static final int REQUEST_TAKE_PHOTO = 1;
-
     public class uploadToServer extends AsyncTask<Void, Void, String> {
 
         private ProgressDialog pd = new ProgressDialog(PostActivity.this);
+
         protected void onPreExecute() {
             super.onPreExecute();
             pd.setMessage("Wait image uploading!");
@@ -235,6 +240,11 @@ public class PostActivity extends Activity implements OnClickListener {
             ArrayList<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>();
             nameValuePairs.add(new BasicNameValuePair("base64", ba1));
             nameValuePairs.add(new BasicNameValuePair("ImageName", System.currentTimeMillis() + ".jpg"));
+            nameValuePairs.add(new BasicNameValuePair("title", title));
+            nameValuePairs.add(new BasicNameValuePair("details", content));
+            nameValuePairs.add(new BasicNameValuePair("create_date", title));
+            nameValuePairs.add(new BasicNameValuePair("create_by", content));
+            nameValuePairs.add(new BasicNameValuePair("myfile", content));
             try {
                 HttpClient httpclient = new DefaultHttpClient();
                 HttpPost httppost = new HttpPost(URL);
@@ -254,29 +264,33 @@ public class PostActivity extends Activity implements OnClickListener {
             super.onPostExecute(result);
             pd.hide();
             pd.dismiss();
+            Intent i = new Intent(getApplicationContext(), MainActivity.class);
+            startActivity(i);
         }
     }
 
-//    private void uploadConten() {
-//        title = et_title.getText().toString();
-//        content = et_conten.getText().toString();
-//        String url = "http://192.168.1.103:8080/api/comment.php";
-//
-//        Map<String, Object> params = new HashMap<String, Object>();
-//        params.put("title", title);
-//        params.put("txt", content);
-//
-//        AQuery aq = new AQuery(getApplicationContext());
-//        aq.ajax(url, params, JSONObject.class, this, "addOrderCb");
-//    }
-//
-//    public void addOrderCb(String url, JSONObject jo, AjaxStatus status) throws JSONException {
-//        Log.e("status", jo.toString(4));
-//
-//
-//    }
+    private void uploadConten() {
+        title = et_title.getText().toString();
+        content = et_conten.getText().toString();
+        String url = "http://192.168.1.141/i_community/add_news.php";
+
+        Map<String, Object> params = new HashMap<String, Object>();
+        params.put("title", title);
+        params.put("details", content);
+        params.put("create_date", title);
+        params.put("create_by", content);
+        params.put("myfile", content);
 
 
+        AQuery aq = new AQuery(getApplicationContext());
+        aq.ajax(url, params, JSONObject.class, this, "addOrderCb");
+    }
+
+    public void addOrderCb(String url, JSONObject jo, AjaxStatus status) throws JSONException {
+        Log.e("status", jo.toString(4));
+
+
+    }
 
 
 }

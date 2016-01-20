@@ -41,7 +41,7 @@ public class ApiHandler {
             public void success(Post post, Response response) {
 
                 if(post != null){
-                    for(int i = 0; i < post.getPosts().size();i++){
+                    for(int i = 0; i < post.getPost().size();i++){
                         ApiBus.getInstance().postQueue(new ImagesReceivedEvent(post));
                     }
 

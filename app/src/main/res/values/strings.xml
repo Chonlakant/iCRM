@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">iCRM</string>
+    <string name="app_name">iCommunity</string>
     <string name="drawer_open">open drawer</string>
     <string name="drawer_close">close drawer</string>
 </resources>

@@ -18,8 +18,12 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AbsListView;
+import android.widget.AdapterView;
 import android.widget.FrameLayout;
 import android.widget.ListView;
 import android.widget.ProgressBar;
@@ -32,6 +36,7 @@ import com.squareup.otto.Subscribe;
 
 import java.util.ArrayList;
 
+import software.is.com.myapplication.activity.NewsFullActivity;
 import software.is.com.myapplication.activity.PostActivity;
 import software.is.com.myapplication.adapter.BasesAdapter;
 import software.is.com.myapplication.event.ActivityResultBus;
@@ -58,6 +63,7 @@ public class MainActivity extends AppCompatActivity {
     ProgressBar progressBar2;
     public static String name;
     public static String email;
+    public static String vender;
     // Asyntask
     AsyncTask<Void, Void, Void> mRegisterTask;
 
@@ -68,6 +74,11 @@ public class MainActivity extends AppCompatActivity {
     ConnectionDetector cd;
     String bg;
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_item_list, menu);
+        return true;
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -147,7 +158,7 @@ public class MainActivity extends AppCompatActivity {
 
         name = i.getStringExtra("name");
         email = i.getStringExtra("email");
-
+        vender = prefManager.vendeName().getOr("is");
         // Make sure the device has the proper dependencies.
         GCMRegistrar.checkDevice(this);
 
@@ -169,31 +180,34 @@ public class MainActivity extends AppCompatActivity {
             // Device is already registered on GCM
             if (GCMRegistrar.isRegisteredOnServer(this)) {
                 // Skips registration.
-                Toast.makeText(getApplicationContext(), "Already registered with GCM", Toast.LENGTH_LONG).show();
+                Toast.makeText(getApplicationContext(), "เข้าสู่ระบบ", Toast.LENGTH_LONG).show();
             } else {
                 // Try to register again, but not in the UI thread.
                 // It's also necessary to cancel the thread onDestroy(),
                 // hence the use of AsyncTask instead of a raw thread.
-                final Context context = this;
-                mRegisterTask = new AsyncTask<Void, Void, Void>() {
-
-                    @Override
-                    protected Void doInBackground(Void... params) {
-                        // Register on our server
-                        // On server creates a new user
-                        ServerUtilities.register(context, name, email, regId);
-                        return null;
-                    }
-
-                    @Override
-                    protected void onPostExecute(Void result) {
-                        mRegisterTask = null;
-                    }
-
-                };
-                mRegisterTask.execute(null, null, null);
+                Toast.makeText(getApplicationContext(),"กรุณาต่ออินเทอร์เน็ต",Toast.LENGTH_SHORT).show();
             }
+
         }
+
+        final Context context = this;
+        mRegisterTask = new AsyncTask<Void, Void, Void>() {
+
+            @Override
+            protected Void doInBackground(Void... params) {
+                // Register on our server
+                // On server creates a new user
+                ServerUtilities.register(context, name, email, regId);
+                return null;
+            }
+
+            @Override
+            protected void onPostExecute(Void result) {
+                mRegisterTask = null;
+            }
+
+        };
+        mRegisterTask.execute(null, null, null);
 
 
     }
@@ -223,7 +237,7 @@ public class MainActivity extends AppCompatActivity {
                         break;
 
                     case R.id.logout:
-
+                        finish();
                         drawerLayout.closeDrawers();
                         break;
 
@@ -233,6 +247,28 @@ public class MainActivity extends AppCompatActivity {
 
                 Log.d("MENU ITEM", menuItem.getTitle().toString());
                 return false;
+            }
+        });
+
+
+        listView.setOnScrollListener(new AbsListView.OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(AbsListView view, int scrollState) {
+
+            }
+
+            @Override
+            public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
+                boolean enable = false;
+                if (listView != null && listView.getChildCount() > 0) {
+                    // check if the first item of the list is visible
+                    boolean firstItemVisible = listView.getFirstVisiblePosition() == 0;
+                    // check if the top of the first item is visible
+                    boolean topOfFirstItemVisible = listView.getChildAt(0).getTop() == 0;
+                    // enabling or disabling the refresh layout
+                    enable = firstItemVisible && topOfFirstItemVisible;
+                }
+                swipeContainer.setEnabled(enable);
             }
         });
 
@@ -255,20 +291,44 @@ public class MainActivity extends AppCompatActivity {
     @Subscribe
     public void GetList(final ImagesReceivedEvent event) {
         if (event != null) {
-            Log.e("event", event.getPost().getPost().get(0).getDetails());
-            Log.e("BGGG", event.getPost().getBg() + "");
-            bg = event.getPost().getBg();
-            int color = Color.parseColor(bg);
-            content_frame.setBackgroundColor(color);
-            listPost.add(event.getPost());
+//            Log.e("event", event.getPost().getPost().get(0).getDetails());
+//            Log.e("BGGG", event.getPost().getBg() + "");
+
+            for (int i = 0; i < event.getPost().getPost().size(); i++) {
+                bg = event.getPost().getBg();
+                int color = Color.parseColor(bg);
+                content_frame.setBackgroundColor(color);
+                listPost.add(event.getPost());
+            }
+
             setupAdapter();
             progressBar2.setVisibility(View.GONE);
         }
+
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                String title = listPost.get(position).getPost().get(position).getTitle();
+                String detail = listPost.get(position).getPost().get(position).getDetails();
+                String image_url = listPost.get(position).getPost().get(position).getFile_img();
+                String code = listPost.get(position).getPost().get(position).getCode();
+                int type = listPost.get(position).getPost().get(position).getStatus_img();
+                Intent i = new Intent(getApplicationContext(), NewsFullActivity.class);
+                i.putExtra("title", title);
+                i.putExtra("detail", detail);
+                i.putExtra("image", image_url);
+                i.putExtra("type",type);
+                i.putExtra("code",code);
+                i.putExtra("vender",vender);
+                startActivity(i);
+            }
+        });
     }
 
     private void setupAdapter() {
         basesAdapter = new BasesAdapter(getApplicationContext(), listPost);
         listView.setAdapter(basesAdapter);
+
     }
 
     private final BroadcastReceiver mHandleMessageReceiver = new BroadcastReceiver() {
@@ -287,13 +347,14 @@ public class MainActivity extends AppCompatActivity {
 
             // Showing received message
 
-            Toast.makeText(getApplicationContext(), "New Message: " + newMessage, Toast.LENGTH_LONG).show();
+            //Toast.makeText(getApplicationContext(), "New Message: " + newMessage, Toast.LENGTH_LONG).show();
 
 
             // Releasing wake lock
             WakeLocker.release();
         }
     };
+
 
     @Override
     protected void onDestroy() {

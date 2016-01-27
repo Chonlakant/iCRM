@@ -9,12 +9,20 @@ import android.content.res.Configuration;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
+import android.graphics.Matrix;
+import android.media.ExifInterface;
 import android.net.Uri;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
+import android.support.v7.app.ActionBarDrawerToggle;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.app.NotificationCompat;
+import android.support.v7.widget.Toolbar;
+import android.text.InputType;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -22,10 +30,6 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
-
-
-import com.androidquery.AQuery;
-import com.androidquery.callback.AjaxStatus;
 
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
@@ -35,6 +39,8 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -45,11 +51,12 @@ import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.util.EntityUtils;
 
+import software.is.com.myapplication.AlertDialogManager;
 import software.is.com.myapplication.Base64;
 import software.is.com.myapplication.MainActivity;
 import software.is.com.myapplication.R;
 
-public class PostActivity extends Activity implements OnClickListener {
+public class PostActivity extends AppCompatActivity implements OnClickListener {
     private Button mTakePhoto, choose_photo;
     private Button btn_upload;
     private ImageView mImageView;
@@ -63,19 +70,22 @@ public class PostActivity extends Activity implements OnClickListener {
     Uri selectedImage;
     Bitmap photo;
     String ba1 = "";
+    AlertDialogManager alert = new AlertDialogManager();
     public static String URL = "http://192.168.1.141/i_community/add_news.php";
-
+    private Toolbar toolbar;
+    Bitmap bm;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.post_news);
-
+        toolbar = (Toolbar) findViewById(R.id.toolbar);
         mTakePhoto = (Button) findViewById(R.id.take_photo);
         choose_photo = (Button) findViewById(R.id.choose_photo);
         btn_upload = (Button) findViewById(R.id.btn_upload);
         mImageView = (ImageView) findViewById(R.id.imageview);
         et_title = (EditText) findViewById(R.id.et_title);
         et_conten = (EditText) findViewById(R.id.et_conten);
+        et_conten.setRawInputType(InputType.TYPE_TEXT_FLAG_MULTI_LINE);
         mTakePhoto.setOnClickListener(this);
         choose_photo.setOnClickListener(new OnClickListener() {
             @Override
@@ -86,37 +96,72 @@ public class PostActivity extends Activity implements OnClickListener {
                 startActivityForResult(galleryIntent, RESULT_LOAD_IMG);
             }
         });
+        if (toolbar != null) {
+            setSupportActionBar(toolbar);
+            getSupportActionBar().setTitle("โพสต์หัวข้อ");
+            toolbar.setTitleTextColor(Color.WHITE);
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+            getSupportActionBar().setDisplayShowHomeEnabled(true);
+            getSupportActionBar().setHomeButtonEnabled(true);
+
+        }
         btn_upload.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
                 title = et_title.getText().toString();
                 content = et_conten.getText().toString();
-//                if (picturePath != null) {
-
-                Log.e("path", "----------------" + picturePath);
-
-                // Image
-                if(picturePath != null){
-                    Bitmap bm = BitmapFactory.decodeFile(picturePath);
-                    ByteArrayOutputStream bao = new ByteArrayOutputStream();
-                    bm.compress(Bitmap.CompressFormat.JPEG, 90, bao);
-                    byte[] ba = bao.toByteArray();
-                    ba1 = Base64.encodeBytes(ba);
-
-                    Log.e("base64", "-----" + ba1);
-                }else{
-                    ba1 = "";
-                }
 
 
-                // Upload image to server
-                new uploadToServer().execute();
+//                if (title.trim().length() > 0) {
+//                    Log.e("path", "----------------" + picturePath);
+//
+//                    // Image
+//                    if (picturePath != null) {
+//                         bm = BitmapFactory.decodeFile(picturePath);
+//                        ByteArrayOutputStream bao = new ByteArrayOutputStream();
+//                        bm.compress(Bitmap.CompressFormat.JPEG, 90, bao);
+//                        byte[] ba = bao.toByteArray();
+//                        ba1 = Base64.encodeBytes(ba);
+//
+//                        Log.e("base64", "-----" + ba1);
+//                    } else {
+//                        ba1 = "";
+//                    }
+//
+//
+//                    // Upload image to server
+//                    new uploadToServer().execute();
+//
 //                } else {
-//                    picturePath = "";
+//                    // user doen't filled that data
+//                    // ask him to fill the form
+//                    alert.showAlertDialog(PostActivity.this, "ใส่รายละเอียด", "คุณยังไมไ่ด้ใส่รายละเอียด", false);
 //                }
 
-                //uploadConten();
+                if (title.trim().length() > 0) {
+                    Log.e("path", "----------------" + picturePath);
 
+                    // Image
+                    if (bm != null) {
+                        ByteArrayOutputStream bao = new ByteArrayOutputStream();
+                        bm.compress(Bitmap.CompressFormat.JPEG, 90, bao);
+                        byte[] ba = bao.toByteArray();
+                        ba1 = Base64.encodeBytes(ba);
+
+                        Log.e("base64", "-----" + ba1);
+                    } else {
+                        ba1 = "";
+                    }
+
+
+                    // Upload image to server
+                    new uploadToServer().execute();
+
+                } else {
+                    // user doen't filled that data
+                    // ask him to fill the form
+                    alert.showAlertDialog(PostActivity.this, "ใส่รายละเอียด", "คุณยังไมไ่ด้ใส่รายละเอียด", false);
+                }
 
             }
         });
@@ -141,40 +186,116 @@ public class PostActivity extends Activity implements OnClickListener {
     }
 
     private void takePhoto() {
-        if (getApplicationContext().getPackageManager().hasSystemFeature(
-                PackageManager.FEATURE_CAMERA)) {
-            Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-            intent.putExtra(MediaStore.EXTRA_OUTPUT, fileUri);
-            startActivityForResult(intent, 100);
+//        if (getApplicationContext().getPackageManager().hasSystemFeature(
+//                PackageManager.FEATURE_CAMERA)) {
+//            Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+//            intent.putExtra(MediaStore.EXTRA_OUTPUT, fileUri);
+//            startActivityForResult(intent, 100);
+//
+//
+//        } else {
+//            Toast.makeText(getApplication(), "Camera not supported", Toast.LENGTH_LONG).show();
+//        }
+        Intent intent = new Intent(
+                MediaStore.ACTION_IMAGE_CAPTURE);
+        File f = new File(android.os.Environment
+                .getExternalStorageDirectory(), "temp.jpg");
+        intent.putExtra(MediaStore.EXTRA_OUTPUT,
+                Uri.fromFile(f));
 
-        } else {
-            Toast.makeText(getApplication(), "Camera not supported", Toast.LENGTH_LONG).show();
-        }
+        startActivityForResult(intent,
+                100);
+
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         // TODO Auto-generated method stub
         Log.i(TAG, "onActivityResult: " + this);
+        Bitmap bitmap;
         if (requestCode == 100 && resultCode == RESULT_OK) {
             mImageView.setVisibility(View.VISIBLE);
 
-            selectedImage = data.getData();
-            photo = (Bitmap) data.getExtras().get("data");
+//            selectedImage = data.getData();
+//
+//            if (selectedImage != null) {
+////                photo = (Bitmap) data.getExtras().get("data");
+////
+////                // Cursor to get image uri to display
+////
+////                String[] filePathColumn = {MediaStore.Images.Media.DATA};
+////                Cursor cursor = getContentResolver().query(selectedImage,
+////                        filePathColumn, null, null, null);
+////                cursor.moveToFirst();
+////
+////                int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
+////                picturePath = cursor.getString(columnIndex);
+////                cursor.close();
+////
+////                Bitmap photo = (Bitmap) data.getExtras().get("data");
+////                mImageView.setImageBitmap(photo);
+//            }
 
-            // Cursor to get image uri to display
+            File f = new File(Environment.getExternalStorageDirectory()
+                    .toString());
+            for (File temp : f.listFiles()) {
+                if (temp.getName().equals("temp.jpg")) {
+                    f = temp;
 
-            String[] filePathColumn = {MediaStore.Images.Media.DATA};
-            Cursor cursor = getContentResolver().query(selectedImage,
-                    filePathColumn, null, null, null);
-            cursor.moveToFirst();
+                    break;
+                }
+            }
 
-            int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
-            picturePath = cursor.getString(columnIndex);
-            cursor.close();
+            if (!f.exists()) {
 
-            Bitmap photo = (Bitmap) data.getExtras().get("data");
-            mImageView.setImageBitmap(photo);
+                Toast.makeText(getBaseContext(), "Error while capturing image", Toast.LENGTH_LONG).show();
+
+                return;
+
+            }
+
+            try {
+
+                bitmap = BitmapFactory.decodeFile(f.getAbsolutePath());
+
+                bitmap = Bitmap.createScaledBitmap(bitmap, 400, 400, true);
+
+                int rotate = 0;
+                try {
+                    ExifInterface exif = new ExifInterface(f.getAbsolutePath());
+                    int orientation = exif.getAttributeInt(
+                            ExifInterface.TAG_ORIENTATION,
+                            ExifInterface.ORIENTATION_NORMAL);
+
+                    switch (orientation) {
+                        case ExifInterface.ORIENTATION_ROTATE_270:
+                            rotate = 270;
+                            break;
+                        case ExifInterface.ORIENTATION_ROTATE_180:
+                            rotate = 180;
+                            break;
+                        case ExifInterface.ORIENTATION_ROTATE_90:
+                            rotate = 90;
+                            break;
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+                Matrix matrix = new Matrix();
+                matrix.postRotate(rotate);
+                bitmap = Bitmap.createBitmap(bitmap, 0, 0, bitmap.getWidth(),
+                        bitmap.getHeight(), matrix, true);
+
+                bm =  Bitmap.createBitmap(bitmap, 0, 0, bitmap.getWidth(),
+                        bitmap.getHeight(), matrix, true);
+
+                mImageView.setImageBitmap(bitmap);
+                //storeImageTosdCard(bitmap);
+            } catch (Exception e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
+
 
         }
         if (requestCode == RESULT_LOAD_IMG && resultCode == RESULT_OK
@@ -195,6 +316,7 @@ public class PostActivity extends Activity implements OnClickListener {
             cursor.close();
             mImageView.setVisibility(View.VISIBLE);
             mImageView.setImageBitmap(BitmapFactory.decodeFile(picturePath));
+            bm = BitmapFactory.decodeFile(picturePath);
 
         }
     }
@@ -232,7 +354,7 @@ public class PostActivity extends Activity implements OnClickListener {
 
         protected void onPreExecute() {
             super.onPreExecute();
-            pd.setMessage("Wait image uploading!");
+            pd.setMessage("กรุณารอสักครู่กำลังอัพโหลด...");
             pd.show();
         }
 
@@ -250,10 +372,12 @@ public class PostActivity extends Activity implements OnClickListener {
             try {
                 HttpClient httpclient = new DefaultHttpClient();
                 HttpPost httppost = new HttpPost(URL);
-                httppost.setEntity(new UrlEncodedFormEntity(nameValuePairs));
+                //httppost.setEntity(new UrlEncodedFormEntity(nameValuePairs));
+                httppost.setEntity(new UrlEncodedFormEntity(nameValuePairs, "UTF-8"));
                 HttpResponse response = httpclient.execute(httppost);
                 String st = EntityUtils.toString(response.getEntity());
                 Log.v("log_tag", "In the try Loop" + st);
+                Log.e("response", st);
 
             } catch (Exception e) {
                 Log.v("log_tag", "Error in http connection " + e.toString());
@@ -264,13 +388,14 @@ public class PostActivity extends Activity implements OnClickListener {
 
         protected void onPostExecute(String result) {
             super.onPostExecute(result);
+            Log.e("result", result);
             pd.hide();
             pd.dismiss();
             Intent i = new Intent(getApplicationContext(), MainActivity.class);
             startActivity(i);
+            finish();
         }
     }
-
 
 
 //    private void uploadConten() {
@@ -295,8 +420,6 @@ public class PostActivity extends Activity implements OnClickListener {
 //
 //
 //    }
-
-
 
 
 }

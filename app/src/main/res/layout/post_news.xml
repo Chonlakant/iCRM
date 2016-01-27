@@ -3,41 +3,52 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:paddingBottom="@dimen/activity_vertical_margin"
-    android:paddingLeft="@dimen/activity_horizontal_margin"
-    android:paddingRight="@dimen/activity_horizontal_margin"
-    android:paddingTop="@dimen/activity_vertical_margin"
     tools:context=".MainActivity">
-
+    <include
+        android:id="@+id/toolbar"
+        layout="@layout/tool_bar" />
     <LinearLayout
         android:id="@+id/linear_layout"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal">
 
+
         <Button
             android:id="@+id/take_photo"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="3dp"
+            android:layout_marginTop="10dp"
             android:layout_weight="1"
-            android:text="ถ่ายรูปภาพ" />
+            android:background="@drawable/btn2"
+            android:text="ถ่ายรูปภาพ"
+            android:textColor="#fff"
+            android:textStyle="bold" />
 
         <Button
             android:id="@+id/choose_photo"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginLeft="3dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginTop="10dp"
             android:layout_weight="1"
-            android:text="เลือกรูปภาพ" />
+            android:background="@drawable/btn2"
+            android:text="เลือกรูปภาพ"
+            android:textColor="#fff"
+            android:textStyle="bold" />
 
 
     </LinearLayout>
 
     <ImageView
-        android:layout_marginTop="5dp"
-        android:visibility="gone"
         android:id="@+id/imageview"
         android:layout_width="fill_parent"
-        android:layout_height="200dp" />
+        android:layout_height="200dp"
+        android:layout_marginTop="5dp"
+        android:visibility="gone" />
 
     <LinearLayout
         android:id="@+id/linear_layout2"
@@ -48,53 +59,116 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
             android:layout_marginTop="20dp"
-            android:text="หัวข้อข่าว" />
+            android:text="หัวข้อ"
+            android:textSize="20dp"
+            android:textStyle="bold" />
 
         <EditText
             android:id="@+id/et_title"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="40dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
             android:layout_marginTop="10dp"
+            android:background="@drawable/btn"
             android:gravity="top|left"
-            android:inputType="textPersonName"
-            android:hint="รายละเอียด" />
+            android:hint="รายละเอียด"
+            android:inputType="textPersonName" />
 
         <TextView
             android:id="@+id/tt"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
             android:layout_marginTop="10dp"
-            android:text="รายละเอียดข่าว" />
+            android:text="รายละเอียด"
+            android:textSize="20dp"
+            android:textStyle="bold" />
+
+        <!--<EditText-->
+        <!--android:layout_marginRight="10dp"-->
+        <!--android:layout_marginLeft="10dp"-->
+        <!--android:id="@+id/et_conten"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="200dp"-->
+        <!--android:imeOptions="actionDone"-->
+        <!--android:layout_alignParentLeft="true"-->
+        <!--android:layout_below="@+id/tt"-->
+        <!--android:layout_marginTop="10dp"-->
+        <!--android:background="@drawable/btn"-->
+        <!--android:gravity="top"-->
+        <!--android:hint="รายละเอียด"-->
+        <!--android:inputType="textPersonName" />-->
 
         <EditText
             android:id="@+id/et_conten"
-            android:background="@drawable/btn"
+            android:layout_marginRight="10dp"
             android:layout_width="match_parent"
-            android:layout_height="200dp"
-            android:layout_marginTop="10dp"
-            android:layout_alignParentLeft="true"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:layout_weight="1"
+            android:background="@drawable/btn"
+            android:fadeScrollbars="false"
             android:gravity="top"
-            android:layout_below="@+id/tt"
-            android:inputType="textPersonName"
-            android:hint="" />
+            android:hint="รายละเอียด"
+            android:inputType="textMultiLine"
+            android:maxLines="4"
+            android:minLines="1"
+            android:scrollbars="vertical"
+            android:textColor="@android:color/black" />
 
         <LinearLayout
             android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:orientation="horizontal"
-            android:layout_gravity="center_horizontal">
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:orientation="horizontal">
 
             <Button
                 android:id="@+id/btn_upload"
-                android:layout_width="wrap_content"
+                android:layout_width="150dp"
                 android:layout_height="wrap_content"
                 android:layout_centerHorizontal="true"
-                android:layout_gravity="bottom"
-                android:text="upload" />
+                android:layout_marginTop="20dp"
+                android:background="@drawable/btn2"
+                android:text="อัพโหลด"
+                android:textColor="#fff"
+                android:textStyle="bold" />
         </LinearLayout>
 
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1" />
 
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="45dp"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:background="#fff"
+            android:orientation="vertical">
+
+            <ImageView
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:layout_gravity="center_horizontal"
+                android:src="@drawable/is" />
+
+            <TextView
+                android:id="@+id/textView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginBottom="3dp"
+                android:layout_marginTop="1dp"
+                android:text="Copyright © 2016 IS Software. All Rights Reserved."
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:textSize="15dp"
+                android:textStyle="bold" />
+        </LinearLayout>
     </LinearLayout>
 
 

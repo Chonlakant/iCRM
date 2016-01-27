@@ -40,19 +40,19 @@ public class ApiHandler {
             @Override
             public void success(Post post, Response response) {
 
-                if(post != null){
-                    for(int i = 0; i < post.getPost().size();i++){
-                        ApiBus.getInstance().postQueue(new ImagesReceivedEvent(post));
-                    }
-
+                if(post.getPost() != null){
+//                    for(int i = 0; i < post.getPost().size();i++){
+//                        ApiBus.getInstance().postQueue(new ImagesReceivedEvent(post));
+//                    }
+                    ApiBus.getInstance().postQueue(new ImagesReceivedEvent(post));
                 }
 
             }
 
             @Override
             public void failure(RetrofitError error) {
-                Log.e("error",error.getLocalizedMessage());
-                Log.e("error",error.getUrl());
+//                Log.e("error",error.getLocalizedMessage());
+//                Log.e("error",error.getUrl());
             }
         });
     }

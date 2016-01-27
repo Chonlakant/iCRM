@@ -55,7 +55,7 @@ public class Post {
         private String code;
         private String title;
         private String details;
-        private Object file_img;
+        private String file_img;
         private int status_img;
         private String OWNER;
         private String count;
@@ -72,7 +72,7 @@ public class Post {
             this.details = details;
         }
 
-        public void setFile_img(Object file_img) {
+        public void setFile_img(String file_img) {
             this.file_img = file_img;
         }
 
@@ -100,7 +100,7 @@ public class Post {
             return details;
         }
 
-        public Object getFile_img() {
+        public String getFile_img() {
             return file_img;
         }
 

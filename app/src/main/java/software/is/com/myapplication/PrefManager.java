@@ -141,6 +141,11 @@ public class PrefManager extends PrettySharedPreferences<PrefManager> {
         return getIntegerEditor("color");
     }
 
+    public StringEditor<PrefManager> vendeName() {
+        return getStringEditor("vendeName");
+    }
+
+
 
 
 

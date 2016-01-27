@@ -17,7 +17,6 @@
             android:layout_height="match_parent">
 
             <RelativeLayout
-                android:background="#99000000"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
@@ -27,21 +26,52 @@
                     layout="@layout/tool_bar" />
 
                 <ListView
-                    android:layout_margin="20dp"
                     android:id="@+id/listView"
-                    android:divider="#00000000"
-                    android:layout_below="@+id/toolbar"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
+                    android:layout_below="@+id/toolbar"
                     android:layout_gravity="center_vertical"
-                    android:layout_weight="1" />
+                    android:layout_marginBottom="40dp"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp"
+                    android:layout_marginTop="20dp"
+                    android:layout_weight="1"
+                    android:divider="#00000000" />
 
                 <ProgressBar
+                    android:id="@+id/progressBar2"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:id="@+id/progressBar2"
-                    android:layout_centerVertical="true"
-                    android:layout_centerHorizontal="true" />
+                    android:layout_centerHorizontal="true"
+                    android:layout_centerVertical="true" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="45dp"
+                    android:layout_alignParentBottom="true"
+                    android:layout_alignParentLeft="true"
+                    android:layout_alignParentStart="true"
+                    android:background="#fff"
+                    android:orientation="vertical">
+
+                    <ImageView
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:layout_gravity="center_horizontal"
+                        android:src="@drawable/is" />
+
+                    <TextView
+                        android:id="@+id/textView"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_marginTop="1dp"
+                        android:layout_marginBottom="3dp"
+                        android:text="Copyright © 2016 IS Software. All Rights Reserved."
+                        android:textAppearance="?android:attr/textAppearanceMedium"
+                        android:textSize="15dp"
+                        android:textStyle="bold" />
+                </LinearLayout>
 
             </RelativeLayout>
 
@@ -56,4 +86,6 @@
         android:layout_gravity="start"
         android:background="@android:color/white"
         app:menu="@menu/menu_drawer" />
+
+
 </android.support.v4.widget.DrawerLayout>

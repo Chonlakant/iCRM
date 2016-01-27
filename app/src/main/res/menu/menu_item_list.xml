@@ -2,24 +2,12 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     tools:context=".activities.ItemChooseActivity">
-    <!--<item-->
-    <!--android:id="@+id/cart"-->
-    <!--android:icon="@drawable/bag"-->
-    <!--android:orderInCategory="100"-->
-    <!--android:title="Cart"-->
-    <!--app:showAsAction="always"/>-->
-
-    <!--<item-->
-        <!--android:id="@+id/cart"-->
-        <!--android:actionLayout="@layout/action_bar_notifitcation_icon"-->
-        <!--android:icon="@drawable/shopping_bag"-->
-        <!--android:title="Cart"-->
-        <!--app:showAsAction="always" />-->
-
 
     <item
-        android:id="@+id/basket"
+        android:id="@+id/action_color"
         android:title=""
-        android:orderInCategory="1"
-        app:showAsAction="always" />
+        android:icon="@drawable/home"
+        android:orderInCategory="100"
+        app:showAsAction="ifRoom" />
+
 </menu>

@@ -8,8 +8,10 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
 
+import com.crashlytics.android.Crashlytics;
 import com.squareup.okhttp.OkHttpClient;
 
+import io.fabric.sdk.android.Fabric;
 import java.io.File;
 
 import retrofit.RequestInterceptor;
@@ -49,6 +51,7 @@ public class IcrmApp extends Application implements Application.ActivityLifecycl
     @Override
     public void onCreate() {
         super.onCreate();
+        Fabric.with(this, new Crashlytics());
 
         sContext = this;
         Instance = this;

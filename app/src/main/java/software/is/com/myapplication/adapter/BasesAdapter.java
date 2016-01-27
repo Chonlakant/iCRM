@@ -65,7 +65,13 @@ public class BasesAdapter extends android.widget.BaseAdapter implements AdapterV
 
             mViewHolder.title.setText(item.getPost().get(position).getTitle());
             mViewHolder.count.setText("อ่าน "+item.getPost().get(position).getCount() + "คน");
-
+            if(item.getPost().get(position).getStatus_img() == 0){
+                mViewHolder.icon.setVisibility(View.VISIBLE);
+                mViewHolder.icon2.setVisibility(View.GONE);
+            }if(item.getPost().get(position).getStatus_img() == 1){
+                mViewHolder.icon.setVisibility(View.GONE);
+                mViewHolder.icon2.setVisibility(View.VISIBLE);
+            }
 //            Picasso.with(context)
 //                    .load(item.getpAvatar())
 //                    .transform(new RoundedTransformation(50, 4))
@@ -91,10 +97,13 @@ public class BasesAdapter extends android.widget.BaseAdapter implements AdapterV
 
         TextView title;
         TextView count;
+        ImageView icon,icon2;
 
         public ViewHolder(View row) {
             title = (TextView) row.findViewById(R.id.title);
             count = (TextView) row.findViewById(R.id.count);
+            icon = (ImageView) row.findViewById(R.id.icon);
+            icon2 = (ImageView) row.findViewById(R.id.icon2);
         }
     }
 

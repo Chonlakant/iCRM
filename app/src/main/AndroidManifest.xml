@@ -66,6 +66,11 @@
         </receiver>
 
         <service android:name=".GCMIntentService" />
+        <meta-data
+            android:name="io.fabric.ApiKey"
+            android:value="c659daedfd2f8a4657af550b429ce6148c373838" />
+
+        <activity android:name=".activity.NewsFullActivity"/>
     </application>
 
 </manifest>

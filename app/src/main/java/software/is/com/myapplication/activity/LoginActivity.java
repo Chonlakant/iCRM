@@ -23,7 +23,9 @@ import android.widget.TextView;
 import software.is.com.myapplication.AlertDialogManager;
 import software.is.com.myapplication.Base64;
 import software.is.com.myapplication.ConnectionDetector;
+import software.is.com.myapplication.IcrmApp;
 import software.is.com.myapplication.MainActivity;
+import software.is.com.myapplication.PrefManager;
 import software.is.com.myapplication.R;
 
 import static software.is.com.myapplication.CommonUtilities.SENDER_ID;
@@ -42,17 +44,19 @@ public class LoginActivity extends Activity {
     // UI elements
     EditText txtName;
     EditText txtEmail;
-
+    EditText txtVender;
+    PrefManager prefManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+        prefManager = IcrmApp.getPrefManager();
         btn_login = (Button) findViewById(R.id.btn_login);
         link_signup = (TextView) findViewById(R.id.link_signup);
         txtName = (EditText) findViewById(R.id.input_email);
         txtEmail = (EditText) findViewById(R.id.input_password);
-
+        txtVender = (EditText) findViewById(R.id.input_vender);
 
         cd = new ConnectionDetector(getApplicationContext());
 
@@ -82,7 +86,8 @@ public class LoginActivity extends Activity {
             public void onClick(View v) {
                 String name = txtName.getText().toString();
                 String email = txtEmail.getText().toString();
-
+                String vender = txtVender.getText().toString();
+                prefManager.vendeName().put(vender);
                 // Check if user filled the form
                 if (name.trim().length() > 0 && email.trim().length() > 0) {
                     // Launch Main Activity
@@ -92,6 +97,7 @@ public class LoginActivity extends Activity {
                     // Sending registraiton details to MainActivity
                     i.putExtra("name", name);
                     i.putExtra("email", email);
+                    i.putExtra("vender",vender);
                     startActivity(i);
                     finish();
                 } else {

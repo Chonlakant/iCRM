@@ -31,7 +31,7 @@
                     android:layout_height="match_parent"
                     android:layout_below="@+id/toolbar"
                     android:layout_gravity="center_vertical"
-                    android:layout_marginBottom="40dp"
+                    android:layout_marginBottom="45dp"
                     android:layout_marginLeft="10dp"
                     android:layout_marginRight="10dp"
                     android:layout_marginTop="20dp"
@@ -47,18 +47,18 @@
 
                 <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="45dp"
+                    android:layout_height="30dp"
                     android:layout_alignParentBottom="true"
                     android:layout_alignParentLeft="true"
                     android:layout_alignParentStart="true"
                     android:background="#fff"
-                    android:orientation="vertical">
+                    android:orientation="horizontal">
 
                     <ImageView
-                        android:layout_width="20dp"
-                        android:layout_height="20dp"
-                        android:layout_gravity="center_horizontal"
-                        android:src="@drawable/is" />
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+                        android:layout_gravity="center_vertical"
+                        android:src="@drawable/is_logo" />
 
                     <TextView
                         android:id="@+id/textView"

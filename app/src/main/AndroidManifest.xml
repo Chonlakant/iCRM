@@ -71,6 +71,7 @@
             android:value="c659daedfd2f8a4657af550b429ce6148c373838" />
 
         <activity android:name=".activity.NewsFullActivity"/>
+        <activity android:name=".activity.MoreActivity"/>
     </application>
 
 </manifest>

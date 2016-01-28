@@ -51,7 +51,7 @@ public class GCMIntentService extends GCMBaseIntentService {
         Log.i(TAG, "Received message");
         String message = intent.getExtras().getString("price");
         link = intent.getExtras().getString("type");
-        Log.e("ddddddd", link);
+//        Log.e("ddddddd", link);
         displayMessage(context, message);
         // notifies user
         generateNotification(context, message,link);

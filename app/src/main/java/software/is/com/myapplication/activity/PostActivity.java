@@ -71,7 +71,7 @@ public class PostActivity extends AppCompatActivity implements OnClickListener {
     Bitmap photo;
     String ba1 = "";
     AlertDialogManager alert = new AlertDialogManager();
-    public static String URL = "http://192.168.1.141/i_community/add_news.php";
+    public static String URL = "http://todayissoftware.com/i_community/add_news.php";
     private Toolbar toolbar;
     Bitmap bm;
     @Override
@@ -100,9 +100,9 @@ public class PostActivity extends AppCompatActivity implements OnClickListener {
             setSupportActionBar(toolbar);
             getSupportActionBar().setTitle("โพสต์หัวข้อ");
             toolbar.setTitleTextColor(Color.WHITE);
-            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-            getSupportActionBar().setDisplayShowHomeEnabled(true);
-            getSupportActionBar().setHomeButtonEnabled(true);
+            getSupportActionBar().setDisplayHomeAsUpEnabled(false);
+            getSupportActionBar().setDisplayShowHomeEnabled(false);
+            getSupportActionBar().setHomeButtonEnabled(false);
 
         }
         btn_upload.setOnClickListener(new OnClickListener() {

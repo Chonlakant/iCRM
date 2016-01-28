@@ -1,11 +1,13 @@
 package software.is.com.myapplication.activity;
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -32,14 +34,16 @@ public class NewsFullActivity extends AppCompatActivity {
     String code;
     String vender;
     private AQuery aq;
+    Button button;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_news_full);
+        setContentView(R.layout.test);
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         imag_content = (ImageView) findViewById(R.id.imag_content);
         title = (TextView) findViewById(R.id.title);
         txt_content = (TextView) findViewById(R.id.txt_content);
+        button = (Button) findViewById(R.id.button);
         imag_content.setVisibility(View.GONE);
         aq = new AQuery(getApplicationContext());
 //        titleNews = getIntent().getStringExtra("title");
@@ -51,7 +55,7 @@ public class NewsFullActivity extends AppCompatActivity {
 
 
 
-        url = "http://192.168.1.141/i_community/service/news_details.php?id="+code+"&user="+vender;
+        url = "http://todayissoftware.com/i_community/service/news_details.php?id="+code+"&user="+vender;
         Log.e("url", url+"");
         if (toolbar != null) {
             setSupportActionBar(toolbar);
@@ -64,7 +68,13 @@ public class NewsFullActivity extends AppCompatActivity {
         }
 
 
-
+        button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(getApplicationContext(),MoreActivity.class);
+                startActivity(i);
+            }
+        });
         aq.ajax(url, JSONObject.class, this, "jsonCallback");
 
     }

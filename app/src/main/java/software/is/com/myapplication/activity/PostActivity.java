@@ -77,7 +77,7 @@ public class PostActivity extends AppCompatActivity implements OnClickListener {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.post_news);
+        setContentView(R.layout.post_news_test);
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         mTakePhoto = (Button) findViewById(R.id.take_photo);
         choose_photo = (Button) findViewById(R.id.choose_photo);

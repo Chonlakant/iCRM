@@ -33,12 +33,12 @@
     <dimen name="common_circle_width">3dp</dimen>
     <dimen name="progress_circle_radius">34dp</dimen>
     <dimen name="global_padding">10dp</dimen>
-    <dimen name="global_margin">10dp</dimen>
+    <dimen name="global_margin">5dp</dimen>
     <dimen name="global_text_size">25sp</dimen>
 
     <dimen name="global_round_corner">10dp</dimen>
 
     <!-- Sample 1 Layout -->
-    <dimen name="sample_1_layout_1_height">350dp</dimen>
+    <dimen name="sample_1_layout_1_height">280dp</dimen>
     <dimen name="sample_1_layout_2_height">180dp</dimen>
 </resources>

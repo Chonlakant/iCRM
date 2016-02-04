@@ -104,6 +104,10 @@ public class PrefManager extends PrettySharedPreferences<PrefManager> {
         return getStringEditor("fristName");
     }
 
+    public StringEditor<PrefManager> inVite() {
+        return getStringEditor("inVite");
+    }
+
 
 
     public StringEditor<PrefManager> userId() {
@@ -143,6 +147,10 @@ public class PrefManager extends PrettySharedPreferences<PrefManager> {
 
     public StringEditor<PrefManager> vendeName() {
         return getStringEditor("vendeName");
+    }
+
+    public StringEditor<PrefManager> token() {
+        return getStringEditor("token");
     }
 
 

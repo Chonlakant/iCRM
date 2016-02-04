@@ -71,7 +71,8 @@ public class PostActivity extends AppCompatActivity implements OnClickListener {
     Bitmap photo;
     String ba1 = "";
     AlertDialogManager alert = new AlertDialogManager();
-    public static String URL = "http://todayissoftware.com/i_community/add_news.php";
+    //public static String URL = "http://todayissoftware.com/i_community/add_news.php";
+    public static String URL = "http://192.168.1.141/i_community/add_news.php";
     private Toolbar toolbar;
     Bitmap bm;
     @Override

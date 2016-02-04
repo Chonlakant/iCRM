@@ -17,6 +17,7 @@
             android:layout_height="match_parent">
 
             <RelativeLayout
+                android:background="#f0e3be"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
@@ -26,6 +27,7 @@
                     layout="@layout/tool_bar" />
 
                 <ListView
+                    android:background="#f0e3be"
                     android:id="@+id/listView"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"

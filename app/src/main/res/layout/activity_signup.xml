@@ -67,6 +67,21 @@
                 android:inputType="textPassword" />
         </android.support.design.widget.TextInputLayout>
 
+        <android.support.design.widget.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:layout_marginTop="8dp">
+
+            <EditText
+                android:background="@drawable/btn"
+                android:id="@+id/input_invite"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:hint="Invite"
+                android:inputType="text" />
+        </android.support.design.widget.TextInputLayout>
+
         <!-- Signup Button -->
         <android.support.v7.widget.AppCompatButton
             android:id="@+id/btn_signup"

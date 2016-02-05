@@ -106,4 +106,5 @@
     <color name="fab_live_chat">#d31f10</color>
     <color name="fab_group_chat">#363f46</color>
     <color name="fab_conference">#4cae47</color>
+    <color name="blue_100">#BBDEFB</color>
 </resources>

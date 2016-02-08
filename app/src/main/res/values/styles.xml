@@ -41,5 +41,9 @@
         <item name="android:windowBackground">@android:color/transparent</item>
     </style>
 
+    <style name="LightPickerDialogTheme" parent="android:Theme.Holo.Light.Dialog">
+        <item name="android:windowMinWidthMinor">0dip</item>
+        <item name="android:windowMinWidthMajor">0dip</item>
+    </style>
 
 </resources>

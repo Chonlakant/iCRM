@@ -1,6 +1,7 @@
 package software.is.com.myapplication;
 
 import android.app.Dialog;
+import android.app.DialogFragment;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -10,6 +11,7 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Handler;
+import android.preference.PreferenceFragment;
 import android.support.design.widget.NavigationView;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -31,11 +33,14 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.github.danielnilsson9.colorpickerview.dialog.ColorPickerDialogFragment;
+import com.github.danielnilsson9.colorpickerview.preference.ColorPreference;
 import com.google.android.gcm.GCMRegistrar;
 import com.squareup.otto.Subscribe;
 
 import java.util.ArrayList;
 
+import software.is.com.myapplication.activity.ColorPickerActivity;
 import software.is.com.myapplication.activity.NewsFullActivity;
 import software.is.com.myapplication.activity.PostActivity;
 import software.is.com.myapplication.adapter.BasesAdapter;
@@ -66,7 +71,8 @@ public class MainActivity extends AppCompatActivity {
     public static String vender;
     // Asyntask
     AsyncTask<Void, Void, Void> mRegisterTask;
-
+    private static final int DIALOG_ID = 0;
+    private static final int PREFERENCE_DIALOG_ID = 1;
     // Alert dialog manager
     AlertDialogManager alert = new AlertDialogManager();
 
@@ -173,6 +179,12 @@ public class MainActivity extends AppCompatActivity {
                         finish();
                         drawerLayout.closeDrawers();
                         break;
+                    case R.id.setting:
+                        Intent intent = new Intent(getApplicationContext(), ColorPickerActivity.class);
+                        startActivity(intent);
+                        drawerLayout.closeDrawers();
+                        break;
+
 
                     default:
                         drawerLayout.closeDrawers();
@@ -264,12 +276,10 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-
-
-
     @Override
     protected void onDestroy() {
 
         super.onDestroy();
     }
-}
+
+    }

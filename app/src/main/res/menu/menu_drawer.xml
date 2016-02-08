@@ -17,6 +17,11 @@
             android:id="@+id/enterprise"
             android:icon="@drawable/enterprise"
             android:title="องค์กร/บริษัท" />
+        <item
+            android:id="@+id/setting"
+            android:icon="@drawable/enterprise"
+            android:title="ตั้งค่า" />
+
 
         <item
             android:id="@+id/logout"

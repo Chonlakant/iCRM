@@ -13,6 +13,8 @@ import com.github.danielnilsson9.colorpickerview.view.ColorPanelView;
 import com.github.danielnilsson9.colorpickerview.view.ColorPickerView;
 import com.github.danielnilsson9.colorpickerview.view.ColorPickerView.OnColorChangedListener;
 
+import software.is.com.myapplication.IcrmApp;
+import software.is.com.myapplication.PrefManager;
 import software.is.com.myapplication.R;
 
 public class ColorPickerActivity extends Activity implements OnColorChangedListener, View.OnClickListener {
@@ -20,7 +22,7 @@ public class ColorPickerActivity extends Activity implements OnColorChangedListe
 	private ColorPickerView mColorPickerView;
 	private ColorPanelView mOldColorPanelView;
 	private ColorPanelView mNewColorPanelView;
-	
+	PrefManager prefManager;
 	private Button mOkButton;
 	private Button mCancelButton;
 	
@@ -28,7 +30,7 @@ public class ColorPickerActivity extends Activity implements OnColorChangedListe
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		getWindow().setFormat(PixelFormat.RGBA_8888);
-		
+		prefManager = IcrmApp.getPrefManager();
 		setContentView(R.layout.activity_color_picker);
 		
 		init();
@@ -63,7 +65,10 @@ public class ColorPickerActivity extends Activity implements OnColorChangedListe
 
 	@Override
 	public void onColorChanged(int newColor) {
-		mNewColorPanelView.setColor(mColorPickerView.getColor());		
+		mNewColorPanelView.setColor(mColorPickerView.getColor());
+
+		prefManager.color().put(newColor);
+		prefManager.commit();
 	}
 
 	@Override

@@ -69,6 +69,7 @@ public class MainActivity extends AppCompatActivity {
     public static String name;
     public static String email;
     public static String vender;
+    RelativeLayout id_background;
     // Asyntask
     AsyncTask<Void, Void, Void> mRegisterTask;
     private static final int DIALOG_ID = 0;
@@ -95,12 +96,15 @@ public class MainActivity extends AppCompatActivity {
         swipeContainer = (SwipeRefreshLayout) findViewById(R.id.swipeContainer);
         ApiBus.getInstance().postQueue(new ImagesRequestedEvent());
         toolbar = (Toolbar) findViewById(R.id.toolbar);
+        id_background = (RelativeLayout) findViewById(R.id.id_background);
         progressBar2 = (ProgressBar) findViewById(R.id.progressBar2);
         drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         content_frame = (RelativeLayout) findViewById(R.id.content_frame);
         navigationView = (NavigationView) findViewById(R.id.navigation_view);
         setupViews();
-        Log.e("zzzx",prefManager.isLogin().getOr(false)+"");
+        Log.e("zzzx", prefManager.isLogin().getOr(false) + "");
+        Log.e("COlor", prefManager.color().getOr(0) + "");
+       // id_background.setBackgroundResource(prefManager.color().getOr(0));
 
         if (toolbar != null) {
             setSupportActionBar(toolbar);

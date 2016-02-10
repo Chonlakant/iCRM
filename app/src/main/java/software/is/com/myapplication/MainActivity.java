@@ -30,6 +30,7 @@ import android.view.WindowManager;
 import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.FrameLayout;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
@@ -72,7 +73,7 @@ public class MainActivity extends AppCompatActivity {
     public static String name;
     public static String email;
     public static String vender;
-    RelativeLayout id_background;
+    LinearLayout id_background;
     // Asyntask
     AsyncTask<Void, Void, Void> mRegisterTask;
     private static final int DIALOG_ID = 0;
@@ -110,7 +111,7 @@ public class MainActivity extends AppCompatActivity {
         swipeContainer = (SwipeRefreshLayout) findViewById(R.id.swipeContainer);
         ApiBus.getInstance().postQueue(new ImagesRequestedEvent());
         toolbar = (Toolbar) findViewById(R.id.toolbar);
-        id_background = (RelativeLayout) findViewById(R.id.id_background);
+        id_background = (LinearLayout) findViewById(R.id.id_background);
         progressBar2 = (ProgressBar) findViewById(R.id.progressBar2);
         drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         content_frame = (RelativeLayout) findViewById(R.id.content_frame);

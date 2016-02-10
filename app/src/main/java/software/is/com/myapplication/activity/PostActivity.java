@@ -26,6 +26,8 @@ import android.text.InputType;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -74,10 +76,21 @@ public class PostActivity extends AppCompatActivity implements OnClickListener {
     //public static String URL = "http://todayissoftware.com/i_community/add_news.php";
     public static String URL = "http://192.168.1.141/i_community/add_news.php";
     private Toolbar toolbar;
+
+    @Override
+    public boolean supportRequestWindowFeature(int featureId) {
+        featureId = Window.FEATURE_NO_TITLE;
+        return super.supportRequestWindowFeature(featureId);
+    }
+
     Bitmap bm;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
+                WindowManager.LayoutParams.FLAG_FULLSCREEN);
+
         setContentView(R.layout.post_news_test);
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         mTakePhoto = (Button) findViewById(R.id.take_photo);
@@ -99,7 +112,7 @@ public class PostActivity extends AppCompatActivity implements OnClickListener {
         });
         if (toolbar != null) {
             setSupportActionBar(toolbar);
-            getSupportActionBar().setTitle("โพสต์หัวข้อ");
+            getSupportActionBar().setTitle("New post");
             toolbar.setTitleTextColor(Color.WHITE);
             getSupportActionBar().setDisplayHomeAsUpEnabled(false);
             getSupportActionBar().setDisplayShowHomeEnabled(false);

@@ -6,6 +6,7 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.pm.ActivityInfo;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.AsyncTask;
@@ -24,6 +25,8 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.FrameLayout;
@@ -77,12 +80,19 @@ public class MainActivity extends AppCompatActivity {
     // Alert dialog manager
     AlertDialogManager alert = new AlertDialogManager();
 
+    @Override
+    public boolean supportRequestWindowFeature(int featureId) {
+        featureId = Window.FEATURE_NO_TITLE;
+        return super.supportRequestWindowFeature(featureId);
+    }
+
     // Connection detector
     ConnectionDetector cd;
     String bg;
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
+
         getMenuInflater().inflate(R.menu.menu_item_list, menu);
         return true;
     }
@@ -90,7 +100,11 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        // Call Fullscreen
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
+                WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_main);
+
         listView = (ListView) findViewById(R.id.listView);
         prefManager = IcrmApp.getPrefManager();
         swipeContainer = (SwipeRefreshLayout) findViewById(R.id.swipeContainer);

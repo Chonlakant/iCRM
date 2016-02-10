@@ -6,6 +6,7 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.pm.ActivityInfo;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.AsyncTask;
@@ -24,9 +25,12 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.FrameLayout;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
@@ -69,7 +73,7 @@ public class MainActivity extends AppCompatActivity {
     public static String name;
     public static String email;
     public static String vender;
-    RelativeLayout id_background;
+    LinearLayout id_background;
     // Asyntask
     AsyncTask<Void, Void, Void> mRegisterTask;
     private static final int DIALOG_ID = 0;
@@ -77,12 +81,19 @@ public class MainActivity extends AppCompatActivity {
     // Alert dialog manager
     AlertDialogManager alert = new AlertDialogManager();
 
+    @Override
+    public boolean supportRequestWindowFeature(int featureId) {
+        featureId = Window.FEATURE_NO_TITLE;
+        return super.supportRequestWindowFeature(featureId);
+    }
+
     // Connection detector
     ConnectionDetector cd;
     String bg;
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
+
         getMenuInflater().inflate(R.menu.menu_item_list, menu);
         return true;
     }
@@ -90,13 +101,17 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        // Call Fullscreen
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
+                WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_main);
+
         listView = (ListView) findViewById(R.id.listView);
         prefManager = IcrmApp.getPrefManager();
         swipeContainer = (SwipeRefreshLayout) findViewById(R.id.swipeContainer);
         ApiBus.getInstance().postQueue(new ImagesRequestedEvent());
         toolbar = (Toolbar) findViewById(R.id.toolbar);
-        id_background = (RelativeLayout) findViewById(R.id.id_background);
+        id_background = (LinearLayout) findViewById(R.id.id_background);
         progressBar2 = (ProgressBar) findViewById(R.id.progressBar2);
         drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         content_frame = (RelativeLayout) findViewById(R.id.content_frame);

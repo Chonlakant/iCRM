@@ -64,7 +64,7 @@ public class BasesAdapter extends android.widget.BaseAdapter implements AdapterV
 
 
             mViewHolder.title.setText(item.getPost().get(position).getTitle());
-            mViewHolder.count.setText("อ่าน "+item.getPost().get(position).getCount() + "คน");
+            mViewHolder.count.setText("อ่านแล้ว "+item.getPost().get(position).getCount() + " คน");
 //            if(item.getPost().get(position).getStatus_img() == 0){
 //                mViewHolder.icon.setVisibility(View.VISIBLE);
 //                mViewHolder.icon2.setVisibility(View.GONE);
@@ -104,7 +104,6 @@ public class BasesAdapter extends android.widget.BaseAdapter implements AdapterV
             title = (TextView) row.findViewById(R.id.title);
             count = (TextView) row.findViewById(R.id.count);
             icon = (ImageView) row.findViewById(R.id.icon);
-            icon2 = (ImageView) row.findViewById(R.id.icon2);
         }
     }
 

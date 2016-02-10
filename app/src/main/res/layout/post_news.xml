@@ -3,6 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    android:background="#FFECB3"
     tools:context=".MainActivity">
     <include
         android:id="@+id/toolbar"
@@ -23,7 +24,7 @@
             android:layout_marginTop="10dp"
             android:layout_weight="1"
             android:background="@drawable/btn2"
-            android:text="ถ่ายรูปภาพ"
+            android:text="Take a picture"
             android:textColor="#fff"
             android:textStyle="bold" />
 
@@ -36,7 +37,7 @@
             android:layout_marginTop="10dp"
             android:layout_weight="1"
             android:background="@drawable/btn2"
-            android:text="เลือกรูปภาพ"
+            android:text="From gallery"
             android:textColor="#fff"
             android:textStyle="bold" />
 
@@ -61,7 +62,7 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="10dp"
             android:layout_marginTop="20dp"
-            android:text="หัวข้อ"
+            android:text="Title"
             android:textSize="20dp"
             android:textStyle="bold" />
 
@@ -74,7 +75,7 @@
             android:layout_marginTop="10dp"
             android:background="@drawable/btn"
             android:gravity="top|left"
-            android:hint="รายละเอียด"
+            android:hint="Title"
             android:inputType="textPersonName" />
 
         <TextView
@@ -83,7 +84,7 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="10dp"
             android:layout_marginTop="10dp"
-            android:text="รายละเอียด"
+            android:text="Description"
             android:textSize="20dp"
             android:textStyle="bold" />
 
@@ -112,7 +113,7 @@
             android:background="@drawable/btn"
             android:fadeScrollbars="false"
             android:gravity="top"
-            android:hint="รายละเอียด"
+            android:hint="Description"
             android:inputType="textMultiLine"
             android:maxLines="4"
             android:minLines="1"
@@ -132,7 +133,7 @@
                 android:layout_centerHorizontal="true"
                 android:layout_marginTop="20dp"
                 android:background="@drawable/btn2"
-                android:text="อัพโหลด"
+                android:text="Upload"
                 android:textColor="#fff"
                 android:textStyle="bold" />
         </LinearLayout>

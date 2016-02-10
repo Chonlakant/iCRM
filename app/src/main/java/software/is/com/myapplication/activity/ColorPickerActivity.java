@@ -6,6 +6,8 @@ import android.graphics.PixelFormat;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.LinearLayout;
 
@@ -30,6 +32,10 @@ public class ColorPickerActivity extends Activity implements OnColorChangedListe
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		getWindow().setFormat(PixelFormat.RGBA_8888);
+		// FullScreen
+		requestWindowFeature(Window.FEATURE_NO_TITLE);
+		getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
+				WindowManager.LayoutParams.FLAG_FULLSCREEN);
 		prefManager = IcrmApp.getPrefManager();
 		setContentView(R.layout.activity_color_picker);
 		

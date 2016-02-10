@@ -1,4 +1,6 @@
-<android.support.v4.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
+
+<android.support.v4.widget.DrawerLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/drawer_layout"
     android:layout_width="match_parent"
@@ -16,9 +18,9 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
-            <RelativeLayout
+            <LinearLayout
                 android:id="@+id/id_background"
-                android:background="#f0e3be"
+                android:background="#FFECB3"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
@@ -28,18 +30,15 @@
                     layout="@layout/tool_bar" />
 
                 <ListView
-                    android:background="#f0e3be"
                     android:id="@+id/listView"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:layout_below="@+id/toolbar"
                     android:layout_gravity="center_vertical"
-                    android:layout_marginBottom="45dp"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginRight="10dp"
-                    android:layout_marginTop="20dp"
                     android:layout_weight="1"
-                    android:divider="#00000000" />
+                    android:divider="#00000000"
+                    android:layout_alignParentBottom="true"
+                    android:layout_centerHorizontal="true"
+                    android:background="#FFECB3"/>
 
                 <ProgressBar
                     android:id="@+id/progressBar2"
@@ -77,7 +76,7 @@
                         android:textStyle="bold" />
                 </LinearLayout>
 
-            </RelativeLayout>
+            </LinearLayout>
 
 
         </android.support.v4.widget.SwipeRefreshLayout>

@@ -7,6 +7,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -35,10 +37,21 @@ public class NewsFullActivity extends AppCompatActivity {
     String vender;
     private AQuery aq;
     Button button;
+
+    @Override
+    public boolean supportRequestWindowFeature(int featureId) {
+        featureId = Window.FEATURE_NO_TITLE;
+        return super.supportRequestWindowFeature(featureId);
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.test);
+
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
+                WindowManager.LayoutParams.FLAG_FULLSCREEN);
+
+        setContentView(R.layout.activity_news_full);
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         imag_content = (ImageView) findViewById(R.id.imag_content);
         title = (TextView) findViewById(R.id.title);
@@ -60,7 +73,7 @@ public class NewsFullActivity extends AppCompatActivity {
         Log.e("url", url+"");
         if (toolbar != null) {
             setSupportActionBar(toolbar);
-            getSupportActionBar().setTitle("รายละเอียด");
+            getSupportActionBar().setTitle("Details");
             toolbar.setTitleTextColor(Color.WHITE);
             getSupportActionBar().setDisplayHomeAsUpEnabled(false);
             getSupportActionBar().setDisplayShowHomeEnabled(false);

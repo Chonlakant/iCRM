@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="#FFECB3">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -26,7 +27,7 @@
                 android:layout_marginTop="10dp"
                 android:layout_weight="1"
                 android:background="@drawable/btn2"
-                android:text="ถ่ายรูปภาพ"
+                android:text="Take a picture"
                 android:textColor="#fff"
                 android:textStyle="bold" />
 
@@ -39,7 +40,7 @@
                 android:layout_marginTop="10dp"
                 android:layout_weight="1"
                 android:background="@drawable/btn2"
-                android:text="เลือกรูปภาพ"
+                android:text="From gallery"
                 android:textColor="#fff"
                 android:textStyle="bold" />
         </LinearLayout>
@@ -63,7 +64,7 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="10dp"
             android:layout_marginTop="20dp"
-            android:text="หัวข้อ"
+            android:text="Title"
             android:textSize="20dp"
             android:textStyle="bold" />
 
@@ -77,7 +78,7 @@
             android:layout_marginTop="6.66dp"
             android:background="@drawable/btn"
             android:gravity="center_vertical"
-            android:hint="รายละเอียด"
+            android:hint="Title"
             android:paddingLeft="15.33dp"
             android:textColor="#323232"
             android:textColorHint="#dadada"
@@ -89,7 +90,7 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="10dp"
             android:layout_marginTop="10dp"
-            android:text="รายละเอียด"
+            android:text="Description"
             android:textSize="20dp"
             android:textStyle="bold" />
 
@@ -97,13 +98,13 @@
         <EditText
             android:id="@+id/et_conten"
             android:layout_width="match_parent"
-            android:layout_height="200dp"
+            android:layout_height="171dp"
             android:layout_marginLeft="13.33dp"
             android:layout_marginRight="13.33dp"
             android:layout_marginTop="6.66dp"
             android:background="@drawable/btn"
             android:gravity="top"
-            android:hint="รายละเอียด"
+            android:hint="Description"
             android:paddingLeft="15.33dp"
             android:paddingRight="15.33dp"
             android:paddingTop="15.33dp"
@@ -120,7 +121,7 @@
             android:layout_marginTop="20dp"
             android:layout_weight="1"
             android:background="@drawable/btn2"
-            android:text="อัพโหลด"
+            android:text="Upload"
             android:textColor="#fff"
             android:textStyle="bold" />
 

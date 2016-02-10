@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="fill_parent"
-    android:layout_height="fill_parent"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/d_backg"
     android:fitsSystemWindows="true">
 
     <LinearLayout
@@ -10,90 +11,105 @@
         android:orientation="vertical"
         android:paddingLeft="24dp"
         android:paddingRight="24dp"
-        android:paddingTop="56dp">
+        android:paddingTop="4dp">
 
         <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="72dp"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
             android:layout_gravity="center_horizontal"
             android:layout_marginBottom="24dp"
             android:src="@mipmap/ic_launcher" />
 
-        <!--  Name Label -->
-        <android.support.design.widget.TextInputLayout
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="8dp"
-            android:layout_marginTop="8dp">
+            android:layout_height="match_parent"
+            android:layout_marginStart="3dp"
+            android:layout_marginLeft="3dp"
+            android:paddingStart="@dimen/abc_text_size_body_2_material"
+            android:paddingLeft="@dimen/abc_text_size_body_2_material"
+            android:paddingRight="@dimen/abc_text_size_body_2_material"
+            android:paddingEnd="@dimen/abc_text_size_body_2_material"
+            android:orientation="vertical">
 
-            <EditText
-                android:id="@+id/input_name"
-                android:background="@drawable/btn"
+            <!--  Name Label -->
+            <TextView
                 android:layout_width="match_parent"
-                android:layout_height="40dp"
-                android:hint="Name"
-                android:inputType="textCapWords" />
-        </android.support.design.widget.TextInputLayout>
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="8dp"
+                android:layout_marginTop="8dp"
+                android:textColor="#000"
+                android:text="Name : "/>
 
-        <!-- Email Label -->
-        <android.support.design.widget.TextInputLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="8dp"
-            android:layout_marginTop="8dp">
-
-            <EditText
-                android:id="@+id/input_email"
-                android:background="@drawable/btn"
+                <EditText
+                    android:id="@+id/input_name"
+                    android:background="@drawable/btn"
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:hint="Your name"
+                    android:inputType="textCapWords" />
+            <!-- Email Label -->
+            <TextView
                 android:layout_width="match_parent"
-                android:layout_height="40dp"
-                android:hint="Email"
-                android:inputType="textEmailAddress" />
-        </android.support.design.widget.TextInputLayout>
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="8dp"
+                android:layout_marginTop="8dp"
+                android:text="Email : "
+                android:textColor="#000"/>
 
-        <!-- Password Label -->
-        <android.support.design.widget.TextInputLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="8dp"
-            android:layout_marginTop="8dp">
+                <EditText
+                    android:id="@+id/input_email"
+                    android:background="@drawable/btn"
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:hint="abc@mail.com"
+                    android:inputType="textEmailAddress" />
 
-            <EditText
-                android:background="@drawable/btn"
-                android:id="@+id/input_password"
+            <!-- Password Label -->
+            <TextView
                 android:layout_width="match_parent"
-                android:layout_height="40dp"
-                android:hint="Password"
-                android:inputType="textPassword" />
-        </android.support.design.widget.TextInputLayout>
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="8dp"
+                android:layout_marginTop="8dp"
+                android:text="Password : "
+                android:textColor="#000"/>
 
-        <android.support.design.widget.TextInputLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="8dp"
-            android:layout_marginTop="8dp">
+                <EditText
+                    android:background="@drawable/btn"
+                    android:id="@+id/input_password"
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:hint="xxxxxxxx"
+                    android:inputType="textPassword" />
 
-            <EditText
-                android:background="@drawable/btn"
-                android:id="@+id/input_invite"
+            <TextView
                 android:layout_width="match_parent"
-                android:layout_height="40dp"
-                android:hint="Invite"
-                android:inputType="text" />
-        </android.support.design.widget.TextInputLayout>
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="8dp"
+                android:layout_marginTop="8dp"
+                android:text="Invite"
+                android:textColor="#000"/>
 
-        <!-- Signup Button -->
-        <android.support.v7.widget.AppCompatButton
-            android:id="@+id/btn_signup"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="24dp"
-            android:layout_marginTop="24dp"
-            android:textColor="#fff"
-            android:textStyle="bold"
-            android:background="@drawable/btn2"
-            android:padding="12dp"
-            android:text="Create Account" />
+                <EditText
+                    android:background="@drawable/btn"
+                    android:id="@+id/input_invite"
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:inputType="text" />
+
+            <!-- Signup Button -->
+            <android.support.v7.widget.AppCompatButton
+                android:id="@+id/btn_signup"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="24dp"
+                android:layout_marginTop="24dp"
+                android:textColor="#fff"
+                android:textStyle="bold"
+                android:background="@drawable/btn2"
+                android:padding="12dp"
+                android:text="Create Account" />
+
+        </LinearLayout>
 
         <TextView
             android:id="@+id/link_login"
@@ -102,8 +118,8 @@
             android:textColor="#000"
             android:layout_marginBottom="24dp"
             android:gravity="center"
-            android:text="ล๊อกอิน"
+            android:text="Login"
             android:textSize="16dip" />
 
     </LinearLayout>
-</ScrollView>
+</LinearLayout>

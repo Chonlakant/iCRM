@@ -16,6 +16,8 @@ import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -63,7 +65,14 @@ public class LoginActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        // FullScreen
+        requestWindowFeature(Window.FEATURE_NO_TITLE);
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
+                WindowManager.LayoutParams.FLAG_FULLSCREEN);
+        //
         setContentView(R.layout.activity_login);
+
         prefManager = IcrmApp.getPrefManager();
         btn_login = (Button) findViewById(R.id.btn_login);
         link_signup = (TextView) findViewById(R.id.link_signup);
@@ -102,7 +111,9 @@ public class LoginActivity extends Activity {
             @Override
             public void onClick(View v) {
 
-                onLoginButtonClick();
+                Intent intent = new Intent(getApplicationContext(),MainActivity.class);
+                startActivity(intent);
+                //onLoginButtonClick();
             }
         });
         link_signup.setOnClickListener(new OnClickListener() {
@@ -122,7 +133,7 @@ public class LoginActivity extends Activity {
         Log.e("www", pass);
         Log.e("ttt", regId);
 
-        if (TextUtils.isEmpty(pass)) {
+        if (TextUtils.isEmpty(email)) {
             Toast.makeText(getApplicationContext(), "กรุณาใส่อีเมล์", Toast.LENGTH_SHORT).show();
             return;
         }

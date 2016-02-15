@@ -72,7 +72,7 @@
 
         <activity android:name=".activity.NewsFullActivity"/>
         <activity android:name=".activity.MoreActivity"/>
-        <activity android:name=".activity.ColorPickerActivity"/>
+        <activity android:name=".activity.SettingActivity"/>
     </application>
 
 </manifest>

@@ -1,17 +1,9 @@
 package software.is.com.myapplication;
 
-import android.app.Dialog;
-import android.app.DialogFragment;
-import android.content.BroadcastReceiver;
-import android.content.Context;
 import android.content.Intent;
-import android.content.IntentFilter;
 import android.graphics.Color;
-import android.net.Uri;
 import android.os.AsyncTask;
-import android.os.Build;
 import android.os.Handler;
-import android.preference.PreferenceFragment;
 import android.support.design.widget.NavigationView;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -23,27 +15,17 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.AbsListView;
-import android.widget.AdapterView;
-import android.widget.FrameLayout;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
-import android.widget.TextView;
-import android.widget.Toast;
 
-import com.github.danielnilsson9.colorpickerview.dialog.ColorPickerDialogFragment;
-import com.github.danielnilsson9.colorpickerview.preference.ColorPreference;
-import com.google.android.gcm.GCMRegistrar;
 import com.squareup.otto.Subscribe;
 
 import java.util.ArrayList;
 
-import software.is.com.myapplication.activity.ColorPickerActivity;
-import software.is.com.myapplication.activity.NewsFullActivity;
+import software.is.com.myapplication.activity.SettingActivity;
 import software.is.com.myapplication.activity.PostActivity;
 import software.is.com.myapplication.adapter.BasesAdapter;
 import software.is.com.myapplication.adapter.RecyclerViewTimelineListAdapter;
@@ -52,11 +34,6 @@ import software.is.com.myapplication.event.ApiBus;
 import software.is.com.myapplication.event.ImagesReceivedEvent;
 import software.is.com.myapplication.event.ImagesRequestedEvent;
 import software.is.com.myapplication.model.Post;
-
-import static software.is.com.myapplication.CommonUtilities.DISPLAY_MESSAGE_ACTION;
-import static software.is.com.myapplication.CommonUtilities.EXTRA_MESSAGE;
-import static software.is.com.myapplication.CommonUtilities.EXTRA_TYPE;
-import static software.is.com.myapplication.CommonUtilities.SENDER_ID;
 
 public class MainActivity extends AppCompatActivity {
     BasesAdapter basesAdapter;
@@ -80,7 +57,7 @@ public class MainActivity extends AppCompatActivity {
     // Alert dialog manager
     AlertDialogManager alert = new AlertDialogManager();
 
-
+    String title;
     public RecyclerView mRecyclerView;
     RecyclerViewTimelineListAdapter recyclerViewTimelineListAdapter;
 
@@ -109,13 +86,14 @@ public class MainActivity extends AppCompatActivity {
         content_frame = (RelativeLayout) findViewById(R.id.content_frame);
         navigationView = (NavigationView) findViewById(R.id.navigation_view);
         setupViews();
+        title = prefManager.title().getOr("iCommunity");
         Log.e("zzzx", prefManager.isLogin().getOr(false) + "");
         Log.e("COlor", prefManager.color().getOr(0) + "");
        // id_background.setBackgroundResource(prefManager.color().getOr(0));
 
         if (toolbar != null) {
             setSupportActionBar(toolbar);
-            getSupportActionBar().setTitle("iCommunity");
+            getSupportActionBar().setTitle(title);
             toolbar.setTitleTextColor(Color.WHITE);
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
             getSupportActionBar().setDisplayShowHomeEnabled(true);
@@ -145,8 +123,8 @@ public class MainActivity extends AppCompatActivity {
                     public void run() {
                         ApiBus.getInstance().postQueue(new ImagesRequestedEvent());
                         listPost.clear();
-                        if (basesAdapter != null) {
-                            basesAdapter.notifyDataSetChanged();
+                        if (recyclerViewTimelineListAdapter != null) {
+                            recyclerViewTimelineListAdapter.notifyDataSetChanged();
                         }
                         if (listPost != null) {
 
@@ -191,7 +169,7 @@ public class MainActivity extends AppCompatActivity {
                         drawerLayout.closeDrawers();
                         break;
                     case R.id.setting:
-                        Intent intent = new Intent(getApplicationContext(), ColorPickerActivity.class);
+                        Intent intent = new Intent(getApplicationContext(), SettingActivity.class);
                         startActivity(intent);
                         drawerLayout.closeDrawers();
                         break;
@@ -206,8 +184,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-
-//        listView.setOnScrollListener(new AbsListView.OnScrollListener() {
+//        mRecyclerView.setOnScrollListener(new AbsListView.OnScrollListener() {
 //            @Override
 //            public void onScrollStateChanged(AbsListView view, int scrollState) {
 //

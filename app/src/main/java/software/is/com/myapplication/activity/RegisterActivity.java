@@ -31,6 +31,7 @@ import android.widget.Toast;
 import com.androidquery.AQuery;
 import com.androidquery.callback.AjaxStatus;
 import com.google.android.gcm.GCMRegistrar;
+import com.squareup.picasso.Picasso;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -46,6 +47,7 @@ import software.is.com.myapplication.IcrmApp;
 import software.is.com.myapplication.MainActivity;
 import software.is.com.myapplication.PrefManager;
 import software.is.com.myapplication.R;
+import software.is.com.myapplication.RoundedTransformation;
 import software.is.com.myapplication.ServerUtilities;
 import software.is.com.myapplication.WakeLocker;
 
@@ -63,6 +65,8 @@ public class RegisterActivity extends Activity {
     EditText input_invite;
     ImageView img_avatar;
 
+    Bitmap bm;
+    String picturePath;
     String username;
     String email;
     String password;
@@ -106,6 +110,7 @@ public class RegisterActivity extends Activity {
             }
         });
     }
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         // TODO Auto-generated method stub
@@ -115,8 +120,7 @@ public class RegisterActivity extends Activity {
             File f = new File(Environment.getExternalStorageDirectory()
                     .toString());
             for (File temp : f.listFiles()) {
-                if (temp.getName().equals("temp.jpg"))
-                {
+                if (temp.getName().equals("temp.jpg")) {
                     f = temp;
 
                     break;
@@ -163,10 +167,11 @@ public class RegisterActivity extends Activity {
                 bitmap = Bitmap.createBitmap(bitmap, 0, 0, bitmap.getWidth(),
                         bitmap.getHeight(), matrix, true);
 
-//                bm =  Bitmap.createBitmap(bitmap, 0, 0, bitmap.getWidth(),
-//                        bitmap.getHeight(), matrix, true);
-//
-//                mImageView.setImageBitmap(bitmap);
+                bm = Bitmap.createBitmap(bitmap, 0, 0, bitmap.getWidth(),
+                        bitmap.getHeight(), matrix, true);
+
+                img_avatar.setImageBitmap(bitmap);
+
                 //storeImageTosdCard(bitmap);
             } catch (Exception e) {
                 // TODO Auto-generated catch block
@@ -189,14 +194,15 @@ public class RegisterActivity extends Activity {
             cursor.moveToFirst();
 
             int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
-//            picturePath = cursor.getString(columnIndex);
-//            cursor.close();
-//            mImageView.setVisibility(View.VISIBLE);
-//            mImageView.setImageBitmap(BitmapFactory.decodeFile(picturePath));
-//            bm = BitmapFactory.decodeFile(picturePath);
+            picturePath = cursor.getString(columnIndex);
+            cursor.close();
+            img_avatar.setVisibility(View.VISIBLE);
+            img_avatar.setImageBitmap(BitmapFactory.decodeFile(picturePath));
+            bm = BitmapFactory.decodeFile(picturePath);
 
         }
     }
+
     private void uploadProfile() {
 
         email = input_email.getText().toString();

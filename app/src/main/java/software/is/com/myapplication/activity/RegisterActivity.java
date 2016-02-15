@@ -1,19 +1,31 @@
 package software.is.com.myapplication.activity;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.app.Dialog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.database.Cursor;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.Matrix;
+import android.media.ExifInterface;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Environment;
 import android.os.Handler;
+import android.provider.MediaStore;
 import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.androidquery.AQuery;
@@ -23,6 +35,7 @@ import com.google.android.gcm.GCMRegistrar;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.File;
 import java.nio.charset.Charset;
 import java.util.HashMap;
 import java.util.Map;
@@ -48,31 +61,37 @@ public class RegisterActivity extends Activity {
     EditText input_email;
     EditText input_password;
     EditText input_invite;
+    ImageView img_avatar;
 
     String username;
     String email;
     String password;
     String invite;
-
+    public static final int REQUEST_GALLERY = 1;
+    public static final int REQUEST_CAMERA = 2;
     AsyncTask<Void, Void, Void> mRegisterTask;
 
     // Alert dialog manager
     AlertDialogManager alert = new AlertDialogManager();
-
+    Dialog loadingDialog;
     // Connection detector
     ConnectionDetector cd;
     String regId;
+    private static int RESULT_LOAD_IMG = 1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_signup);
+        img_avatar = (ImageView) findViewById(R.id.img_avatar);
         btn_signup = (Button) findViewById(R.id.btn_signup);
         input_name = (EditText) findViewById(R.id.input_name);
         input_email = (EditText) findViewById(R.id.input_email);
         input_password = (EditText) findViewById(R.id.input_password);
         input_invite = (EditText) findViewById(R.id.input_invite);
         pref = IcrmApp.getPrefManager();
+        loadingDialog = new Dialog(RegisterActivity.this, R.style.FullHeightDialog);
+        loadingDialog.setContentView(R.layout.dialog_loading);
         btn_signup.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -80,15 +99,110 @@ public class RegisterActivity extends Activity {
 
             }
         });
+        img_avatar.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                selectAvatar();
+            }
+        });
     }
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        // TODO Auto-generated method stub
+        Bitmap bitmap;
+        if (requestCode == 100 && resultCode == RESULT_OK) {
 
+            File f = new File(Environment.getExternalStorageDirectory()
+                    .toString());
+            for (File temp : f.listFiles()) {
+                if (temp.getName().equals("temp.jpg")) {
+                    f = temp;
+
+                    break;
+                }
+            }
+
+            if (!f.exists()) {
+
+                Toast.makeText(getBaseContext(), "Error while capturing image", Toast.LENGTH_LONG).show();
+
+                return;
+
+            }
+
+            try {
+
+                bitmap = BitmapFactory.decodeFile(f.getAbsolutePath());
+
+                bitmap = Bitmap.createScaledBitmap(bitmap, 400, 400, true);
+
+                int rotate = 0;
+                try {
+                    ExifInterface exif = new ExifInterface(f.getAbsolutePath());
+                    int orientation = exif.getAttributeInt(
+                            ExifInterface.TAG_ORIENTATION,
+                            ExifInterface.ORIENTATION_NORMAL);
+
+                    switch (orientation) {
+                        case ExifInterface.ORIENTATION_ROTATE_270:
+                            rotate = 270;
+                            break;
+                        case ExifInterface.ORIENTATION_ROTATE_180:
+                            rotate = 180;
+                            break;
+                        case ExifInterface.ORIENTATION_ROTATE_90:
+                            rotate = 90;
+                            break;
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+                Matrix matrix = new Matrix();
+                matrix.postRotate(rotate);
+                bitmap = Bitmap.createBitmap(bitmap, 0, 0, bitmap.getWidth(),
+                        bitmap.getHeight(), matrix, true);
+
+//                bm =  Bitmap.createBitmap(bitmap, 0, 0, bitmap.getWidth(),
+//                        bitmap.getHeight(), matrix, true);
+//
+//                mImageView.setImageBitmap(bitmap);
+                //storeImageTosdCard(bitmap);
+            } catch (Exception e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
+
+
+        }
+        if (requestCode == RESULT_LOAD_IMG && resultCode == RESULT_OK
+                && null != data) {
+            // Get the Image from data
+
+            Uri selectedImage = data.getData();
+            String[] filePathColumn = {MediaStore.Images.Media.DATA};
+
+            // Get the cursor
+            Cursor cursor = getContentResolver().query(selectedImage,
+                    filePathColumn, null, null, null);
+            // Move to first row
+            cursor.moveToFirst();
+
+            int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
+//            picturePath = cursor.getString(columnIndex);
+//            cursor.close();
+//            mImageView.setVisibility(View.VISIBLE);
+//            mImageView.setImageBitmap(BitmapFactory.decodeFile(picturePath));
+//            bm = BitmapFactory.decodeFile(picturePath);
+
+        }
+    }
     private void uploadProfile() {
 
         email = input_email.getText().toString();
         username = input_name.getText().toString();
         password = input_password.getText().toString();
         invite = input_invite.getText().toString();
-
+        loadingDialog.show();
 
         cd = new ConnectionDetector(getApplicationContext());
 
@@ -186,6 +300,7 @@ public class RegisterActivity extends Activity {
 //            Toast.makeText(getApplicationContext(), "กรอก pass หรือ Password ผิด", Toast.LENGTH_SHORT).show();
         }
         if (success == 1) {
+            loadingDialog.dismiss();
             Toast.makeText(getApplicationContext(), "เข้าสู่รับบสำเร็จ", Toast.LENGTH_SHORT).show();
             Intent intentMain = new Intent(getApplicationContext().getApplicationContext(), MainActivity.class);
             startActivity(intentMain);
@@ -222,6 +337,50 @@ public class RegisterActivity extends Activity {
         }
     };
 
+    public void selectAvatar() {
+        final CharSequence[] items = {"Choose from Gallery", "Take from Camera",
+                "Cancel"};
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(RegisterActivity.this);
+
+        builder.setTitle("Update avatar");
+
+        builder.setItems(items, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int item) {
+                if (items[item].equals("Choose from Gallery")) {
+                    pickImage();
+                } else if (items[item].equals("Take from Camera")) {
+                    pickCamera();
+                } else if (items[item].equals("Cancel")) {
+                    dialog.dismiss();
+                }
+            }
+        });
+        builder.show();
+    }
+
+    public void pickImage() {
+//        Intent photoPickerIntent = new Intent(Intent.ACTION_PICK);
+//        photoPickerIntent.setType("image/*");
+//        startActivityForResult(photoPickerIntent, REQUEST_GALLERY);
+        Intent galleryIntent = new Intent(Intent.ACTION_PICK,
+                android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+        // Start the Intent
+        startActivityForResult(galleryIntent, RESULT_LOAD_IMG);
+    }
+
+    public void pickCamera() {
+        Intent intent = new Intent(
+                MediaStore.ACTION_IMAGE_CAPTURE);
+        File f = new File(android.os.Environment
+                .getExternalStorageDirectory(), "temp.jpg");
+        intent.putExtra(MediaStore.EXTRA_OUTPUT,
+                Uri.fromFile(f));
+
+        startActivityForResult(intent,
+                100);
+    }
 
     @Override
     protected void onDestroy() {

@@ -38,7 +38,7 @@ public class NewsFullActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.test);
+        setContentView(R.layout.activity_news_full);
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         imag_content = (ImageView) findViewById(R.id.imag_content);
         title = (TextView) findViewById(R.id.title);
@@ -55,8 +55,8 @@ public class NewsFullActivity extends AppCompatActivity {
 
 
 
-       // url = "http://todayissoftware.com/i_community/service/news_details.php?id="+code+"&user="+vender;
-        url = "http://192.168.1.141/i_community/service/news_details.php?id="+code+"&user="+vender;
+        url = "http://todayissoftware.com/i_community/service/news_details.php?id="+code+"&user="+vender;
+       // url = "http://192.168.1.141/i_community/service/news_details.php?id="+code+"&user="+vender;
         Log.e("url", url+"");
         if (toolbar != null) {
             setSupportActionBar(toolbar);

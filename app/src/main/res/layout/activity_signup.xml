@@ -12,12 +12,29 @@
         android:paddingRight="24dp"
         android:paddingTop="56dp">
 
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="72dp"
-            android:layout_gravity="center_horizontal"
-            android:layout_marginBottom="24dp"
-            android:src="@mipmap/ic_launcher" />
+
+        <RelativeLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content">
+
+            <ImageView
+                android:id="@+id/img_avatar"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:layout_gravity="center_horizontal"
+                android:src="@drawable/camera"
+                android:layout_alignParentTop="true"
+                android:layout_centerHorizontal="true" />
+
+            <ImageView
+                android:id="@+id/imageView5"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_gravity="center_horizontal"
+                android:src="@drawable/ic_tabbar_photo"
+                android:layout_centerVertical="true"
+                android:layout_centerHorizontal="true" />
+        </RelativeLayout>
 
         <!--  Name Label -->
         <android.support.design.widget.TextInputLayout
@@ -78,7 +95,7 @@
                 android:id="@+id/input_invite"
                 android:layout_width="match_parent"
                 android:layout_height="40dp"
-                android:hint="Invite"
+                android:hint="รหัส"
                 android:inputType="text" />
         </android.support.design.widget.TextInputLayout>
 

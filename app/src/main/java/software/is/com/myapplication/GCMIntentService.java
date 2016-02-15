@@ -6,6 +6,7 @@ import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.google.android.gcm.GCMBaseIntentService;
 
@@ -53,6 +54,7 @@ public class GCMIntentService extends GCMBaseIntentService {
         link = intent.getExtras().getString("type");
 //        Log.e("ddddddd", link);
         displayMessage(context, message);
+        Toast.makeText(getApplicationContext(),message,Toast.LENGTH_SHORT).show();
         // notifies user
         generateNotification(context, message,link);
     }

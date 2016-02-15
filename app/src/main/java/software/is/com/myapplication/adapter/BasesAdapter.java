@@ -56,7 +56,7 @@ public class BasesAdapter extends android.widget.BaseAdapter implements AdapterV
             LayoutInflater mInflater =
                     (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
-            convertView = mInflater.inflate(R.layout.item_listview, parent, false);
+            convertView = mInflater.inflate(R.layout.item_feed_text, parent, false);
 
             mViewHolder = new ViewHolder(convertView);
 

@@ -18,7 +18,6 @@
 
             <RelativeLayout
                 android:id="@+id/id_background"
-                android:background="#f0e3be"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
@@ -27,19 +26,12 @@
                     android:id="@+id/toolbar"
                     layout="@layout/tool_bar" />
 
-                <ListView
-                    android:background="#f0e3be"
-                    android:id="@+id/listView"
+                <android.support.v7.widget.RecyclerView
+                    android:id="@+id/rvFeed"
+                    android:layout_marginTop="55dp"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:layout_below="@+id/toolbar"
-                    android:layout_gravity="center_vertical"
-                    android:layout_marginBottom="45dp"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginRight="10dp"
-                    android:layout_marginTop="20dp"
-                    android:layout_weight="1"
-                    android:divider="#00000000" />
+                    android:scrollbars="none" />
 
                 <ProgressBar
                     android:id="@+id/progressBar2"

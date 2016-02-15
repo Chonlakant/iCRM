@@ -1,8 +1,10 @@
 package software.is.com.myapplication.activity;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.res.Configuration;
@@ -23,9 +25,12 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.app.NotificationCompat;
 import android.support.v7.widget.Toolbar;
 import android.text.InputType;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.animation.Animation;
+import android.view.animation.TranslateAnimation;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -71,8 +76,8 @@ public class PostActivity extends AppCompatActivity implements OnClickListener {
     Bitmap photo;
     String ba1 = "";
     AlertDialogManager alert = new AlertDialogManager();
-    //public static String URL = "http://todayissoftware.com/i_community/add_news.php";
-    public static String URL = "http://192.168.1.141/i_community/add_news.php";
+    public static String URL = "http://todayissoftware.com/i_community/add_news.php";
+    //public static String URL = "http://192.168.1.141/i_community/add_news.php";
     private Toolbar toolbar;
     Bitmap bm;
     @Override
@@ -97,6 +102,9 @@ public class PostActivity extends AppCompatActivity implements OnClickListener {
                 startActivityForResult(galleryIntent, RESULT_LOAD_IMG);
             }
         });
+
+
+        et_title.setEllipsize(TextUtils.TruncateAt.MARQUEE);
         if (toolbar != null) {
             setSupportActionBar(toolbar);
             getSupportActionBar().setTitle("โพสต์หัวข้อ");
@@ -397,6 +405,7 @@ public class PostActivity extends AppCompatActivity implements OnClickListener {
             finish();
         }
     }
+
 
 
 //    private void uploadConten() {

@@ -1,6 +1,7 @@
 package software.is.com.myapplication.activity;
 
 import android.app.Activity;
+import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -59,7 +60,7 @@ public class LoginActivity extends Activity {
     EditText txtVender;
     PrefManager prefManager;
     String regId;
-
+    Dialog loadingDialog;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -73,6 +74,9 @@ public class LoginActivity extends Activity {
         cd = new ConnectionDetector(getApplicationContext());
         regId = prefManager.token().getOr("");
         Log.e("vvvvvvvv", regId + "");
+
+        loadingDialog = new Dialog(LoginActivity.this, R.style.FullHeightDialog);
+        loadingDialog.setContentView(R.layout.dialog_loading);
 
         if(prefManager.isLogin().getOr(false) != false){
             Intent intentMain = new Intent(getApplicationContext().getApplicationContext(), MainActivity.class);
@@ -121,7 +125,7 @@ public class LoginActivity extends Activity {
         Log.e("qqq", pass);
         Log.e("www", pass);
         Log.e("ttt", regId);
-
+        loadingDialog.show();
         if (TextUtils.isEmpty(pass)) {
             Toast.makeText(getApplicationContext(), "กรุณาใส่อีเมล์", Toast.LENGTH_SHORT).show();
             return;
@@ -154,6 +158,7 @@ public class LoginActivity extends Activity {
             Toast.makeText(getApplicationContext(), "กรอก pass หรือ Password ผิด", Toast.LENGTH_SHORT).show();
         }
         if (success == 1) {
+            loadingDialog.dismiss();
             Toast.makeText(getApplicationContext(), "เข้าสู่รับบสำเร็จ", Toast.LENGTH_SHORT).show();
             Intent intentMain = new Intent(getApplicationContext().getApplicationContext(), MainActivity.class);
             startActivity(intentMain);

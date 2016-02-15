@@ -18,6 +18,8 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
@@ -44,6 +46,7 @@ import software.is.com.myapplication.activity.ColorPickerActivity;
 import software.is.com.myapplication.activity.NewsFullActivity;
 import software.is.com.myapplication.activity.PostActivity;
 import software.is.com.myapplication.adapter.BasesAdapter;
+import software.is.com.myapplication.adapter.RecyclerViewTimelineListAdapter;
 import software.is.com.myapplication.event.ActivityResultBus;
 import software.is.com.myapplication.event.ApiBus;
 import software.is.com.myapplication.event.ImagesReceivedEvent;
@@ -77,6 +80,10 @@ public class MainActivity extends AppCompatActivity {
     // Alert dialog manager
     AlertDialogManager alert = new AlertDialogManager();
 
+
+    public RecyclerView mRecyclerView;
+    RecyclerViewTimelineListAdapter recyclerViewTimelineListAdapter;
+
     // Connection detector
     ConnectionDetector cd;
     String bg;
@@ -91,7 +98,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        listView = (ListView) findViewById(R.id.listView);
+       // listView = (ListView) findViewById(R.id.listView);
         prefManager = IcrmApp.getPrefManager();
         swipeContainer = (SwipeRefreshLayout) findViewById(R.id.swipeContainer);
         ApiBus.getInstance().postQueue(new ImagesRequestedEvent());
@@ -200,26 +207,34 @@ public class MainActivity extends AppCompatActivity {
         });
 
 
-        listView.setOnScrollListener(new AbsListView.OnScrollListener() {
-            @Override
-            public void onScrollStateChanged(AbsListView view, int scrollState) {
+//        listView.setOnScrollListener(new AbsListView.OnScrollListener() {
+//            @Override
+//            public void onScrollStateChanged(AbsListView view, int scrollState) {
+//
+//            }
+//
+//            @Override
+//            public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
+//                boolean enable = false;
+//                if (listView != null && listView.getChildCount() > 0) {
+//                    // check if the first item of the list is visible
+//                    boolean firstItemVisible = listView.getFirstVisiblePosition() == 0;
+//                    // check if the top of the first item is visible
+//                    boolean topOfFirstItemVisible = listView.getChildAt(0).getTop() == 0;
+//                    // enabling or disabling the refresh layout
+//                    enable = firstItemVisible && topOfFirstItemVisible;
+//                }
+//                swipeContainer.setEnabled(enable);
+//            }
+//        });
 
-            }
+        mRecyclerView = (RecyclerView) findViewById(R.id.rvFeed);
+        mRecyclerView.setHasFixedSize(true);
 
-            @Override
-            public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
-                boolean enable = false;
-                if (listView != null && listView.getChildCount() > 0) {
-                    // check if the first item of the list is visible
-                    boolean firstItemVisible = listView.getFirstVisiblePosition() == 0;
-                    // check if the top of the first item is visible
-                    boolean topOfFirstItemVisible = listView.getChildAt(0).getTop() == 0;
-                    // enabling or disabling the refresh layout
-                    enable = firstItemVisible && topOfFirstItemVisible;
-                }
-                swipeContainer.setEnabled(enable);
-            }
-        });
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getApplicationContext());
+        linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
+
+        mRecyclerView.setLayoutManager(linearLayoutManager);
 
     }
 
@@ -248,35 +263,37 @@ public class MainActivity extends AppCompatActivity {
                 int color = Color.parseColor(bg);
                 content_frame.setBackgroundColor(color);
                 listPost.add(event.getPost());
+                recyclerViewTimelineListAdapter = new RecyclerViewTimelineListAdapter(getApplicationContext(), listPost);
+                mRecyclerView.setAdapter(recyclerViewTimelineListAdapter);
             }
 
             setupAdapter();
             progressBar2.setVisibility(View.GONE);
         }
 
-        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                String title = listPost.get(position).getPost().get(position).getTitle();
-                String detail = listPost.get(position).getPost().get(position).getDetails();
-                String image_url = listPost.get(position).getPost().get(position).getFile_img();
-                String code = listPost.get(position).getPost().get(position).getCode();
-                int type = listPost.get(position).getPost().get(position).getStatus_img();
-                Intent i = new Intent(getApplicationContext(), NewsFullActivity.class);
-                i.putExtra("title", title);
-                i.putExtra("detail", detail);
-                i.putExtra("image", image_url);
-                i.putExtra("type",type);
-                i.putExtra("code",code);
-                i.putExtra("vender",vender);
-                startActivity(i);
-            }
-        });
+//        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+//            @Override
+//            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+//                String title = listPost.get(position).getPost().get(position).getTitle();
+//                String detail = listPost.get(position).getPost().get(position).getDetails();
+//                String image_url = listPost.get(position).getPost().get(position).getFile_img();
+//                String code = listPost.get(position).getPost().get(position).getCode();
+//                int type = listPost.get(position).getPost().get(position).getStatus_img();
+//                Intent i = new Intent(getApplicationContext(), NewsFullActivity.class);
+//                i.putExtra("title", title);
+//                i.putExtra("detail", detail);
+//                i.putExtra("image", image_url);
+//                i.putExtra("type",type);
+//                i.putExtra("code",code);
+//                i.putExtra("vender",vender);
+//                startActivity(i);
+//            }
+//        });
     }
 
     private void setupAdapter() {
-        basesAdapter = new BasesAdapter(getApplicationContext(), listPost);
-        listView.setAdapter(basesAdapter);
+       // basesAdapter = new BasesAdapter(getApplicationContext(), listPost);
+//        listView.setAdapter(basesAdapter);
 
     }
 

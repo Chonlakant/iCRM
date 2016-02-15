@@ -1,6 +1,7 @@
 package software.is.com.myapplication.adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -14,6 +15,7 @@ import java.util.ArrayList;
 
 import software.is.com.myapplication.R;
 import software.is.com.myapplication.RoundedTransformation;
+import software.is.com.myapplication.activity.NewsFullActivity;
 import software.is.com.myapplication.model.Post;
 import software.is.com.myapplication.viewholder.RecyclerViewSimpleTextViewHolder;
 import software.is.com.myapplication.viewholder.ViewHolderPhoto;
@@ -129,7 +131,27 @@ public class RecyclerViewTimelineListAdapter extends RecyclerView.Adapter<Recycl
             vh1.SetOnItemClickListener(new ViewHolderText.OnItemClickListener() {
                 @Override
                 public void onItemClick(View view, int position) {
-                    Toast.makeText(context,item.getPost().get(position).getTitle(),Toast.LENGTH_SHORT).show();
+                    Toast.makeText(context, item.getPost().get(position).getTitle(), Toast.LENGTH_SHORT).show();
+                }
+            });
+            vh1.SetOnItemClickListenerView(new ViewHolderText.OnItemClickListener() {
+                @Override
+                public void onItemClick(View view, int position) {
+                    Toast.makeText(context, position + "", Toast.LENGTH_SHORT).show();
+                    String title = item.getPost().get(position).getTitle();
+                    String detail = item.getPost().get(position).getDetails();
+                    String image_url = item.getPost().get(position).getFile_img();
+                    String code = item.getPost().get(position).getCode();
+                    int type = item.getPost().get(position).getStatus_img();
+                    Intent i = new Intent(context, NewsFullActivity.class);
+                    i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    i.putExtra("title", title);
+                    i.putExtra("detail", detail);
+                    i.putExtra("image", image_url);
+                    i.putExtra("type", type);
+                    i.putExtra("code", code);
+                    i.putExtra("vender", "is");
+                    context.getApplicationContext().startActivity(i);
                 }
             });
         }

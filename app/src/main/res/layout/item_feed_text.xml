@@ -29,6 +29,7 @@
                 android:orientation="vertical">
 
                 <include
+                    android:id="@+id/view_coclick"
                     layout="@layout/item_feed_text_detail"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content" />

@@ -15,19 +15,31 @@ public class ViewHolderText extends RecyclerView.ViewHolder implements View.OnCl
     private ImageView profile_avatar;
     private View comment_view_1;
     private View comment_view_2;
+    private View view_coclick;
     private Button btn_comment;
     private ImageView ivUserAvatar1;
     private OnItemClickListener mItemClickListener;
+    private OnItemClickListener mItemClickListenerview;
 
     public ViewHolderText(View v) {
         super(v);
         label1 = (TextView) v.findViewById(R.id.text);
         label2 = (TextView) v.findViewById(R.id.profile_name);
         profile_avatar = (ImageView) v.findViewById(R.id.profile_avatar);
+        view_coclick = v.findViewById(R.id.view_coclick);
         btn_comment = (Button) v.findViewById(R.id.btn_comment);
 //        ivUserAvatar1 = (ImageView) comment_view_1.findViewById(R.id.ivUserAvatar);
 //        tvName = (TextView) comment_view_1.findViewById(R.id.tvName);
         profile_avatar.setOnClickListener(this);
+        view_coclick.setOnClickListener(this);
+    }
+
+    public View getView_coclick() {
+        return view_coclick;
+    }
+
+    public void setView_coclick(View view_coclick) {
+        this.view_coclick = view_coclick;
     }
 
     public TextView getLabel1() {
@@ -109,6 +121,10 @@ public class ViewHolderText extends RecyclerView.ViewHolder implements View.OnCl
                 if (mItemClickListener != null) {
                     mItemClickListener.onItemClick(v, getPosition());
                 }
+            case R.id.view_coclick:
+                if (mItemClickListenerview != null) {
+                    mItemClickListenerview.onItemClick(v, getPosition());
+                }
                 break;
         }
     }
@@ -119,6 +135,14 @@ public class ViewHolderText extends RecyclerView.ViewHolder implements View.OnCl
 
     public void SetOnItemClickListener(final OnItemClickListener mItemClickListener) {
         this.mItemClickListener = mItemClickListener;
+    }
+
+    public interface OnItemClickListenerView {
+        void onItemClick(View view, int position);
+    }
+
+    public void SetOnItemClickListenerView(final OnItemClickListener mItemClickListener) {
+        this.mItemClickListenerview = mItemClickListener;
     }
 }
 

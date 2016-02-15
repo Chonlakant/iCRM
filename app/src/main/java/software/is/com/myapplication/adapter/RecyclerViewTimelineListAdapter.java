@@ -6,6 +6,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.squareup.picasso.Picasso;
 
@@ -101,14 +102,14 @@ public class RecyclerViewTimelineListAdapter extends RecyclerView.Adapter<Recycl
     }
 
     private void configureViewHolder1(ViewHolderText vh1, int position) {
-        Post item = list.get(position);
+        final Post item = list.get(position);
         if (item != null) {
             vh1.getLabel1().setText(item.getPost().get(position).getTitle());
             vh1.getLabel2().setText(item.getPost().get(position).getTitle());
 
-            Log.e("ddd", item.getPost().get(position).getStatus_img()+"");
+            Log.e("ddd", item.getPost().get(position).getStatus_img() + "");
 
-            if(item.getPost().get(position).getStatus_img() == 0) {
+            if (item.getPost().get(position).getStatus_img() == 0) {
                 Picasso.with(context)
                         .load(R.drawable.is_logo)
                         .centerCrop()
@@ -124,6 +125,13 @@ public class RecyclerViewTimelineListAdapter extends RecyclerView.Adapter<Recycl
 //                        .transform(new RoundedTransformation(100, 4))
 //                        .into(vh1.getIvUserAvatar1());
             }
+
+            vh1.SetOnItemClickListener(new ViewHolderText.OnItemClickListener() {
+                @Override
+                public void onItemClick(View view, int position) {
+                    Toast.makeText(context,item.getPost().get(position).getTitle(),Toast.LENGTH_SHORT).show();
+                }
+            });
         }
     }
 
@@ -154,4 +162,5 @@ public class RecyclerViewTimelineListAdapter extends RecyclerView.Adapter<Recycl
 
 //        vh2.getLn_comment().setVisibility(View.GONE);
     }
+
 }

@@ -153,6 +153,7 @@ public class LoginActivity extends Activity {
         Log.e("return", json.toString(4));
 
         int success = json.getInt("success");
+        Log.e("qqqq",json.getString("username"));
         Log.e("ddd", success + "");
         if (success == 0) {
             Toast.makeText(getApplicationContext(), "กรอก pass หรือ Password ผิด", Toast.LENGTH_SHORT).show();
@@ -164,6 +165,7 @@ public class LoginActivity extends Activity {
             startActivity(intentMain);
             finish();
             prefManager.isLogin().put(true);
+            prefManager.userName().put(json.getString("username"));
             prefManager.commit();
 
         }

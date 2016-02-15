@@ -9,14 +9,16 @@ import android.widget.TextView;
 import software.is.com.myapplication.R;
 
 
-public class ViewHolderText extends RecyclerView.ViewHolder {
+public class ViewHolderText extends RecyclerView.ViewHolder implements View.OnClickListener {
 
-    private TextView label1, label2,tvName;
+    private TextView label1, label2, tvName;
     private ImageView profile_avatar;
     private View comment_view_1;
     private View comment_view_2;
     private Button btn_comment;
     private ImageView ivUserAvatar1;
+    private OnItemClickListener mItemClickListener;
+
     public ViewHolderText(View v) {
         super(v);
         label1 = (TextView) v.findViewById(R.id.text);
@@ -25,6 +27,7 @@ public class ViewHolderText extends RecyclerView.ViewHolder {
         btn_comment = (Button) v.findViewById(R.id.btn_comment);
 //        ivUserAvatar1 = (ImageView) comment_view_1.findViewById(R.id.ivUserAvatar);
 //        tvName = (TextView) comment_view_1.findViewById(R.id.tvName);
+        profile_avatar.setOnClickListener(this);
     }
 
     public TextView getLabel1() {
@@ -90,4 +93,32 @@ public class ViewHolderText extends RecyclerView.ViewHolder {
     public void setBtn_comment(Button btn_comment) {
         this.btn_comment = btn_comment;
     }
+
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.profile_avatar:
+//                    final Intent intent = new Intent(mActivity, PostCommentsActivity.class);
+//                    int[] startingLocation = new int[2];
+//                    v.getLocationOnScreen(startingLocation);
+//                    intent.putExtra(PostCommentsActivity.ARG_DRAWING_START_LOCATION, startingLocation[1]);
+//                    //intent.putParcelableArrayListExtra(CommentsActivity.ARG_COMMENT_LIST, Parcels.wrap(post.comment));
+//                    intent.putExtra("POST_ID", post.postId);
+//                    mActivity.startActivity(intent);
+//                    mActivity.overridePendingTransition(0, 0);
+                if (mItemClickListener != null) {
+                    mItemClickListener.onItemClick(v, getPosition());
+                }
+                break;
+        }
+    }
+
+    public interface OnItemClickListener {
+        void onItemClick(View view, int position);
+    }
+
+    public void SetOnItemClickListener(final OnItemClickListener mItemClickListener) {
+        this.mItemClickListener = mItemClickListener;
+    }
 }
+

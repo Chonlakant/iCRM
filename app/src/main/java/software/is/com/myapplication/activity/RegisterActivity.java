@@ -115,7 +115,8 @@ public class RegisterActivity extends Activity {
             File f = new File(Environment.getExternalStorageDirectory()
                     .toString());
             for (File temp : f.listFiles()) {
-                if (temp.getName().equals("temp.jpg")) {
+                if (temp.getName().equals("temp.jpg"))
+                {
                     f = temp;
 
                     break;

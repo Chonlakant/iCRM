@@ -9,17 +9,17 @@ public class Post {
 
     /**
      * status : 0
-     * bg : #70DEED
-     * post : [{"code":"213","title":"jkk","details":"jjjm","file_img":null,"status_img":0,"OWNER":"IS","count":"120"},{"code":"212","title":"okok","details":"okok","file_img":null,"status_img":0,"OWNER":"IS","count":"120"},{"code":"211","title":"ggg","details":"gghhn","file_img":null,"status_img":0,"OWNER":"IS","count":"120"},{"code":"210","title":"","details":"","file_img":"http://192.168.1.141/i_community/uploads/1453258893348.jpg","status_img":1,"OWNER":"IS","count":"120"},{"code":"209","title":"hh","details":"hhhh","file_img":null,"status_img":0,"OWNER":"IS","count":"120"},{"code":"208","title":"kkk","details":"hhh","file_img":"http://192.168.1.141/i_community/uploads/1453258714732.jpg","status_img":1,"OWNER":"IS","count":"120"},{"code":"207","title":"yyy","details":"iiio","file_img":"http://192.168.1.141/i_community/uploads/1453258701260.jpg","status_img":1,"OWNER":"IS","count":"120"},{"code":"206","title":"","details":"","file_img":"http://192.168.1.141/i_community/uploads/1453258687014.jpg","status_img":1,"OWNER":"IS","count":"120"},{"code":"205","title":"","details":"","file_img":"http://192.168.1.141/i_community/uploads/1453258652851.jpg","status_img":1,"OWNER":"IS","count":"120"},{"code":"204","title":"yhhh","details":"fggh","file_img":"http://192.168.1.141/i_community/uploads/1453258470649.jpg","status_img":1,"OWNER":"IS","count":"120"},{"code":"203","title":"","details":"","file_img":null,"status_img":0,"OWNER":"IS","count":"120"},{"code":"202","title":"","details":"","file_img":null,"status_img":0,"OWNER":"IS","count":"120"},{"code":"201","title":"gggg","details":"fff","file_img":null,"status_img":0,"OWNER":"IS","count":"120"},{"code":"200","title":"ù","details":"","file_img":null,"status_img":0,"OWNER":"IS","count":"120"},{"code":"199","title":"ù","details":"","file_img":null,"status_img":0,"OWNER":"IS","count":"120"},{"code":"198","title":"ù","details":"","file_img":null,"status_img":0,"OWNER":"IS","count":"120"},{"code":"197","title":"","details":"","file_img":"http://192.168.1.141/i_community/uploads/1453174044666.jpg","status_img":1,"OWNER":"IS","count":"120"},{"code":"196","title":"ù","details":"","file_img":null,"status_img":0,"OWNER":"IS","count":"120"},{"code":"195","title":"ù","details":"","file_img":null,"status_img":0,"OWNER":"IS","count":"120"}]
+     * bg : #ECECEC
+     * post : [{"code":"16","title":"jjj","details":"jj","file_img":"","status_img":0,"OWNER":"IS","count":"120"},{"code":"15","title":"thanks ","details":"oo","file_img":"","status_img":0,"OWNER":"IS","count":"120"},{"code":"13","title":"ทดสอบ","details":"ทดสอบ","file_img":"","status_img":0,"OWNER":"IS","count":"120"},{"code":"11","title":"เพชร\u201d ที่ขึ้นชื่อว่าแข็งแกร่งที่สุ","details":"การสังเคราะห์เพชรสามารถทำได้จากวัสดุหลายชนิด อาทิเช่น แดน ฟรอสท์ นักธรณีวิทยาชาวเยอรมัน ได้ทดลองสร้างเพชรจากเนยถั่วซึ่งถือเป็นแหล่งที่มีคาร์บอนและแก๊สคาร์บอนไดออกไซด์มาก โดยใช้อุณหภูมิและความดันสูงในการเปลี่ยนแก๊สให้กลายเป็นเพชรได้ นอกจากนี้ยังมีรายงานว่า เหล้าเตกีล่าร์สามารถใช้สร้างเพชรได้ ด้วยวิธีเผาเหล้าภายใต้ความดันจนกลายเป็นเพชรที่สามารถใช้เป็นฉนวนไฟฟ้าที่ดีจึงกล่าวได้ว่า เพชรมีประโยชน์มากมายทั้งจากความสวยงาม และความแข็งแกร่ง หากแต่มีราคาแพงและสังเคราะห์ได้ยาก","file_img":"http://todayissoftware.com/i_community/uploads/1453867647301.jpg","status_img":1,"OWNER":"IS","count":"120"},{"code":"9","title":"ทดสอบ","details":"ทดสอบ","file_img":"","status_img":0,"OWNER":"IS","count":"120"}]
      */
 
     private int status;
     private String bg;
     /**
-     * code : 213
-     * title : jkk
-     * details : jjjm
-     * file_img : null
+     * code : 16
+     * title : jjj
+     * details : jj
+     * file_img :
      * status_img : 0
      * OWNER : IS
      * count : 120

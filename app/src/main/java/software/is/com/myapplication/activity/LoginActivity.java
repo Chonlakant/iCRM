@@ -166,6 +166,7 @@ public class LoginActivity extends Activity {
             finish();
             prefManager.isLogin().put(true);
             prefManager.userName().put(json.getString("username"));
+            prefManager.vendeName().put(json.getString("vendor"));
             prefManager.commit();
 
         }

@@ -5,5 +5,17 @@ package software.is.com.myapplication.event;
  */
 
 public class ImagesRequestedEvent {
+        String vendor;
 
+    public ImagesRequestedEvent(String vendor) {
+        this.vendor = vendor;
+    }
+
+    public String getVendor() {
+        return vendor;
+    }
+
+    public void setVendor(String vendor) {
+        this.vendor = vendor;
+    }
 }

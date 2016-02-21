@@ -89,7 +89,4 @@ public class PrefManager extends PrettySharedPreferences<PrefManager> {
     }
 
 
-
-
-
 }

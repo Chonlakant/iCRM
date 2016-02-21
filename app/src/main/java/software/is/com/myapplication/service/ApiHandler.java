@@ -35,15 +35,13 @@ public class ApiHandler {
 
 
     @Subscribe public void onGetConversationGroup(final ImagesRequestedEvent event) {
-
-        api.getImage(new Callback<Post>() {
+    Log.e("ssss",event.getVendor());
+        api.getImage(event.getVendor(),new Callback<Post>() {
             @Override
             public void success(Post post, Response response) {
 
                 if(post.getPost() != null){
-//                    for(int i = 0; i < post.getPost().size();i++){
-//                        ApiBus.getInstance().postQueue(new ImagesReceivedEvent(post));
-//                    }
+                    Log.e("aaaa",post.getPost().size()+"");
                     ApiBus.getInstance().postQueue(new ImagesReceivedEvent(post));
                 }
 
@@ -51,8 +49,8 @@ public class ApiHandler {
 
             @Override
             public void failure(RetrofitError error) {
-//                Log.e("error",error.getLocalizedMessage());
-//                Log.e("error",error.getUrl());
+                Log.e("error",error.getLocalizedMessage());
+                Log.e("error",error.getUrl());
             }
         });
     }

@@ -15,6 +15,7 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ListView;
@@ -64,21 +65,16 @@ public class MainActivity extends AppCompatActivity {
     // Connection detector
     ConnectionDetector cd;
     String bg;
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_item_list, menu);
-        return true;
-    }
+    String vendor;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-       // listView = (ListView) findViewById(R.id.listView);
+        // listView = (ListView) findViewById(R.id.listView);
         prefManager = IcrmApp.getPrefManager();
         swipeContainer = (SwipeRefreshLayout) findViewById(R.id.swipeContainer);
-        ApiBus.getInstance().postQueue(new ImagesRequestedEvent());
+
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         id_background = (RelativeLayout) findViewById(R.id.id_background);
         progressBar2 = (ProgressBar) findViewById(R.id.progressBar2);
@@ -87,9 +83,11 @@ public class MainActivity extends AppCompatActivity {
         navigationView = (NavigationView) findViewById(R.id.navigation_view);
         setupViews();
         title = prefManager.title().getOr("iCommunity");
+        vendor = prefManager.vendeName().getOr("");
+        ApiBus.getInstance().postQueue(new ImagesRequestedEvent(vendor));
         Log.e("zzzx", prefManager.isLogin().getOr(false) + "");
-        Log.e("COlor", prefManager.color().getOr(0) + "");
-       // id_background.setBackgroundResource(prefManager.color().getOr(0));
+        Log.e("COlor", vendor);
+        // id_background.setBackgroundResource(prefManager.color().getOr(0));
 
         if (toolbar != null) {
             setSupportActionBar(toolbar);
@@ -121,14 +119,13 @@ public class MainActivity extends AppCompatActivity {
                 new Handler().postDelayed(new Runnable() {
                     @Override
                     public void run() {
-                        ApiBus.getInstance().postQueue(new ImagesRequestedEvent());
+                        ApiBus.getInstance().postQueue(new ImagesRequestedEvent(vendor));
                         listPost.clear();
                         if (recyclerViewTimelineListAdapter != null) {
                             recyclerViewTimelineListAdapter.notifyDataSetChanged();
                         }
                         if (listPost != null) {
 
-                            setupAdapter();
                         }
 
                         swipeContainer.setRefreshing(false);
@@ -138,6 +135,7 @@ public class MainActivity extends AppCompatActivity {
         });
 
     }
+
     private void setupViews() {
 
         navigationView.addHeaderView(new DrawerHeaderView(this));
@@ -243,35 +241,26 @@ public class MainActivity extends AppCompatActivity {
                 recyclerViewTimelineListAdapter = new RecyclerViewTimelineListAdapter(getApplicationContext(), listPost);
                 mRecyclerView.setAdapter(recyclerViewTimelineListAdapter);
             }
-
-            setupAdapter();
             progressBar2.setVisibility(View.GONE);
         }
 
-//        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-//            @Override
-//            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-//                String title = listPost.get(position).getPost().get(position).getTitle();
-//                String detail = listPost.get(position).getPost().get(position).getDetails();
-//                String image_url = listPost.get(position).getPost().get(position).getFile_img();
-//                String code = listPost.get(position).getPost().get(position).getCode();
-//                int type = listPost.get(position).getPost().get(position).getStatus_img();
-//                Intent i = new Intent(getApplicationContext(), NewsFullActivity.class);
-//                i.putExtra("title", title);
-//                i.putExtra("detail", detail);
-//                i.putExtra("image", image_url);
-//                i.putExtra("type",type);
-//                i.putExtra("code",code);
-//                i.putExtra("vender",vender);
-//                startActivity(i);
-//            }
-//        });
     }
 
-    private void setupAdapter() {
-       // basesAdapter = new BasesAdapter(getApplicationContext(), listPost);
-//        listView.setAdapter(basesAdapter);
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.menu_main, menu);
+        return true;
+    }
 
+    public boolean onOptionsItemSelected(MenuItem menuItem) {
+        switch (menuItem.getItemId()) {
+            case R.id.action_logout:
+
+                break;
+        }
+        return super.onOptionsItemSelected(menuItem);
     }
 
     @Override
@@ -280,4 +269,4 @@ public class MainActivity extends AppCompatActivity {
         super.onDestroy();
     }
 
-    }
+}

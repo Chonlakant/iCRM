@@ -87,15 +87,27 @@ public class RegisterActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_signup);
-        img_avatar = (ImageView) findViewById(R.id.img_avatar);
         btn_signup = (Button) findViewById(R.id.btn_signup);
         input_name = (EditText) findViewById(R.id.input_name);
         input_email = (EditText) findViewById(R.id.input_email);
         input_password = (EditText) findViewById(R.id.input_password);
-        input_invite = (EditText) findViewById(R.id.input_invite);
         pref = IcrmApp.getPrefManager();
         loadingDialog = new Dialog(RegisterActivity.this, R.style.FullHeightDialog);
         loadingDialog.setContentView(R.layout.dialog_loading);
+        // Make sure the device has the proper dependencies.
+        GCMRegistrar.checkDevice(this);
+
+        // Make sure the manifest was properly set - comment out this line
+        // while developing the app, then uncomment it when it's ready.
+        GCMRegistrar.checkManifest(this);
+
+
+        registerReceiver(mHandleMessageReceiver, new IntentFilter(DISPLAY_MESSAGE_ACTION));
+
+        // Get GCM registration id
+        regId = GCMRegistrar.getRegistrationId(this);
+
+        Log.e("aaaa", regId + "");
         btn_signup.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -103,12 +115,7 @@ public class RegisterActivity extends Activity {
 
             }
         });
-        img_avatar.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                selectAvatar();
-            }
-        });
+
     }
 
     @Override
@@ -208,7 +215,6 @@ public class RegisterActivity extends Activity {
         email = input_email.getText().toString();
         username = input_name.getText().toString();
         password = input_password.getText().toString();
-        invite = input_invite.getText().toString();
         loadingDialog.show();
 
         cd = new ConnectionDetector(getApplicationContext());
@@ -223,25 +229,11 @@ public class RegisterActivity extends Activity {
             return;
         }
 
-        // Make sure the device has the proper dependencies.
-        GCMRegistrar.checkDevice(this);
 
-        // Make sure the manifest was properly set - comment out this line
-        // while developing the app, then uncomment it when it's ready.
-        GCMRegistrar.checkManifest(this);
-
-
-        registerReceiver(mHandleMessageReceiver, new IntentFilter(DISPLAY_MESSAGE_ACTION));
-
-        // Get GCM registration id
-        regId = GCMRegistrar.getRegistrationId(this);
-
-        Log.e("aaaa", regId + "");
 
         pref.email().put(email);
         pref.passWord().put(password);
         pref.name().put(username);
-        pref.inVite().put(invite);
         pref.token().put(regId);
         pref.isLogin().put(true);
         pref.commit();
@@ -285,13 +277,13 @@ public class RegisterActivity extends Activity {
 
 
         Charset chars = Charset.forName("UTF-8");
-        String url = "http://192.168.1.141/i_community/register_gcm.php";
+        String url = "http://todayissoftware.com//i_community/register_gcm.php";
 
         Map<String, Object> params = new HashMap<String, Object>();
         params.put("email", email);
         params.put("password", password);
         params.put("regId", regId);
-
+        params.put("vendor_code","null");
 
         AQuery aq = new AQuery(getApplication());
         aq.ajax(url, params, JSONObject.class, this, "registerCb");

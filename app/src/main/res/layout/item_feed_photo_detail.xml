@@ -21,12 +21,20 @@
         android:paddingLeft="@dimen/padding_size_layout_medium"
         android:paddingRight="@dimen/padding_size_layout_medium">
 
-        <ImageView
-            android:id="@+id/thumb"
-            android:layout_width="200dp"
-            android:layout_height="100dp"
-            android:layout_gravity="center_vertical"
-            android:scaleType="fitCenter" />
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/feed_image_height">
+
+            <ImageView
+                android:id="@+id/thumb"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_alignParentBottom="true"
+                android:layout_alignParentRight="true"
+                android:layout_marginRight="6dp" />
+
+
+        </RelativeLayout>
 
         <TextView
             android:id="@+id/tvName"

@@ -87,6 +87,9 @@ public class PrefManager extends PrettySharedPreferences<PrefManager> {
     public StringEditor<PrefManager> token() {
         return getStringEditor("token");
     }
+    public StringEditor<PrefManager> picture() {
+        return getStringEditor("picture");
+    }
 
 
 }

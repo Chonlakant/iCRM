@@ -104,7 +104,7 @@ public class PostActivity extends AppCompatActivity implements OnClickListener {
         });
 
 
-        et_title.setEllipsize(TextUtils.TruncateAt.MARQUEE);
+//        et_title.setEllipsize(TextUtils.TruncateAt.MARQUEE);
         if (toolbar != null) {
             setSupportActionBar(toolbar);
             getSupportActionBar().setTitle("โพสต์หัวข้อ");

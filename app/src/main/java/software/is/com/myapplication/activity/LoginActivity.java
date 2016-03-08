@@ -134,7 +134,7 @@ public class LoginActivity extends Activity {
             Toast.makeText(getApplicationContext(), "กรุณาใส่พาสเวิร์ด", Toast.LENGTH_SHORT).show();
             return;
         }
-        String url = "http://192.168.1.141/i_community/login.php";
+        String url = "http://todayissoftware.com/i_community/login.php";
 
         Map<String, Object> params = new HashMap<String, Object>();
         params.put("email", email);
@@ -156,6 +156,7 @@ public class LoginActivity extends Activity {
         Log.e("qqqq",json.getString("username"));
         Log.e("ddd", success + "");
         if (success == 0) {
+            loadingDialog.dismiss();
             Toast.makeText(getApplicationContext(), "กรอก pass หรือ Password ผิด", Toast.LENGTH_SHORT).show();
         }
         if (success == 1) {

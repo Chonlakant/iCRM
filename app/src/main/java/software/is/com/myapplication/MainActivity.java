@@ -2,6 +2,7 @@ package software.is.com.myapplication;
 
 import android.content.Intent;
 import android.graphics.Color;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Handler;
 import android.support.design.widget.NavigationView;
@@ -18,9 +19,11 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import com.squareup.otto.Subscribe;
 
@@ -45,6 +48,8 @@ public class MainActivity extends AppCompatActivity {
     private DrawerLayout drawerLayout;
     private Toolbar toolbar;
     PrefManager prefManager;
+    ImageView imageView2;
+    TextView textView4;
     RelativeLayout content_frame;
     ProgressBar progressBar2;
     public static String name;
@@ -66,7 +71,8 @@ public class MainActivity extends AppCompatActivity {
     ConnectionDetector cd;
     String bg;
     String vendor;
-
+    String picture;
+    Uri uri;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -76,6 +82,9 @@ public class MainActivity extends AppCompatActivity {
         swipeContainer = (SwipeRefreshLayout) findViewById(R.id.swipeContainer);
 
         toolbar = (Toolbar) findViewById(R.id.toolbar);
+//        textView4 = (TextView) findViewById(R.id.textView14);
+//        imageView2 = (ImageView) findViewById(R.id.imageView6);
+
         id_background = (RelativeLayout) findViewById(R.id.id_background);
         progressBar2 = (ProgressBar) findViewById(R.id.progressBar2);
         drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -84,14 +93,19 @@ public class MainActivity extends AppCompatActivity {
         setupViews();
         title = prefManager.title().getOr("iCommunity");
         vendor = prefManager.vendeName().getOr("");
+        picture = prefManager.picture().getOr("aaaaaaa");
         ApiBus.getInstance().postQueue(new ImagesRequestedEvent(vendor));
         Log.e("zzzx", prefManager.isLogin().getOr(false) + "");
         Log.e("COlor", vendor);
+        Log.e("picture", picture);
         // id_background.setBackgroundResource(prefManager.color().getOr(0));
 
         if (toolbar != null) {
+            uri = Uri.parse(picture);
             setSupportActionBar(toolbar);
             getSupportActionBar().setTitle(title);
+//            textView4.setText(title);
+//            imageView2.setImageURI(uri);
             toolbar.setTitleTextColor(Color.WHITE);
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
             getSupportActionBar().setDisplayShowHomeEnabled(true);

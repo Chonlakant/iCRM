@@ -22,15 +22,42 @@
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
 
-                <include
-                    android:id="@+id/toolbar"
-                    layout="@layout/tool_bar" />
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <android.support.v7.widget.Toolbar
+                        android:id="@+id/toolbar"
+                        android:layout_width="match_parent"
+                        android:layout_height="?attr/actionBarSize"
+                        android:background="?attr/colorPrimary"
+                        android:elevation="4dp"
+                        android:theme="@style/myToolbarTheme"
+                        android:transitionName="actionBar">
+
+                        <!--<ImageView-->
+                            <!--android:id="@+id/imageView2"-->
+                            <!--android:layout_width="50dp"-->
+                            <!--android:layout_height="50dp" />-->
+
+                        <!--<TextView-->
+                            <!--android:id="@+id/textView4"-->
+                            <!--android:layout_width="wrap_content"-->
+                            <!--android:layout_height="wrap_content"-->
+                            <!--android:text="Medium Text"-->
+                            <!--android:textAppearance="?android:attr/textAppearanceMedium" />-->
+                    </android.support.v7.widget.Toolbar>
+
+
+                </LinearLayout>
+
 
                 <android.support.v7.widget.RecyclerView
                     android:id="@+id/rvFeed"
-                    android:layout_marginTop="55dp"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
+                    android:layout_marginTop="55dp"
                     android:scrollbars="none" />
 
                 <ProgressBar
@@ -61,8 +88,8 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_vertical"
-                        android:layout_marginTop="1dp"
                         android:layout_marginBottom="3dp"
+                        android:layout_marginTop="1dp"
                         android:text="Copyright © 2016 IS Software. All Rights Reserved."
                         android:textAppearance="?android:attr/textAppearanceMedium"
                         android:textSize="12dp"

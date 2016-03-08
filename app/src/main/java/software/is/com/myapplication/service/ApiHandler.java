@@ -49,8 +49,8 @@ public class ApiHandler {
 
             @Override
             public void failure(RetrofitError error) {
-                Log.e("error",error.getLocalizedMessage());
-                Log.e("error",error.getUrl());
+//                Log.e("error",error.getLocalizedMessage());
+//                Log.e("error",error.getUrl());
             }
         });
     }
